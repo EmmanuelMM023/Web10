@@ -89,6 +89,7 @@
             background-image:
                 radial-gradient(circle at 12% 12%, rgba(178, 128, 74, 0.12), transparent 42%),
                 radial-gradient(circle at 85% 20%, rgba(110, 79, 48, 0.12), transparent 40%),
+                repeating-linear-gradient(135deg, rgba(145, 102, 61, 0.06), rgba(145, 102, 61, 0.06) 2px, transparent 2px, transparent 10px),
                 linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(247, 240, 225, 0.9));
         }
         .chart-container {
@@ -126,6 +127,7 @@
             position: relative;
             z-index: 2;
             text-shadow: 0 4px 18px rgba(0, 0, 0, 0.45);
+            animation: heroReveal 1s ease both;
         }
         .accent-color { color: var(--gold); }
         .accent-bg { background-color: var(--gold); }
@@ -139,6 +141,35 @@
             padding: 1.5rem;
             border: 1px solid var(--edge);
             position: relative;
+            overflow: hidden;
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: rise 0.7s ease both;
+        }
+        .section-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 18px 32px -18px var(--shadow);
+        }
+        .section-card::before,
+        .section-card::after {
+            content: "";
+            position: absolute;
+            width: 26px;
+            height: 26px;
+            border: 2px solid var(--gold);
+            opacity: 0.45;
+        }
+        .section-card::before {
+            top: 12px;
+            left: 12px;
+            border-right: none;
+            border-bottom: none;
+        }
+        .section-card::after {
+            bottom: 12px;
+            right: 12px;
+            border-left: none;
+            border-top: none;
         }
         h1, h2, h3 {
             font-family: 'Cinzel', serif;
@@ -152,6 +183,14 @@
             border-bottom: 2px solid var(--gold);
             padding-bottom: 0.5rem;
             margin-bottom: 1rem;
+        }
+        h2::after {
+            content: "";
+            display: block;
+            width: 64px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), transparent);
+            margin-top: 0.35rem;
         }
         p, li {
             font-size: 1.05rem;
@@ -185,17 +224,14 @@
             line-height: 1;
             margin: 0.5rem 0;
         }
-        .unicode-icon {
-            font-size: 1.5em;
-            margin-right: 0.5em;
-            color: var(--accent);
-        }
         .timeline-image { /* Estilo para las imágenes en la línea de tiempo */
             width: 80px; /* Ancho fijo */
             height: 80px; /* Alto fijo */
             object-fit: cover; /* Asegura que la imagen cubra el espacio sin distorsionarse */
             border-radius: 0.375rem; /* Esquinas redondeadas (md) */
             margin-bottom: 0.75rem; /* Espacio debajo de la imagen */
+            border: 2px solid var(--edge);
+            filter: sepia(20%);
         }
         .timeline-card {
             background-color: #fbf6ea;
@@ -205,9 +241,48 @@
             transition: all 0.3s ease-in-out;
             border: 1px solid var(--edge);
         }
+        .timeline-card::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: -40%;
+            width: 80%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 20%, rgba(197, 155, 74, 0.18), transparent 55%);
+            pointer-events: none;
+        }
         .timeline-card:hover {
             box-shadow: 0 16px 30px -12px var(--shadow);
             transform: scale(1.03);
+        }
+        @keyframes rise {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes heroReveal {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .section-card,
+            .hero-content {
+                animation: none;
+            }
+            .section-card:hover {
+                transform: none;
+            }
         }
         .text-0077B6 { color: var(--ink-strong); }
         .text-0077B6.accent-color { color: var(--gold); }
@@ -262,13 +337,13 @@
             <div class="grid md:grid-cols-2 gap-6 mb-8">
                 <div>
                     <h3 class="text-2xl font-semibold mb-2">Oliver Cromwell y el Parlamento (c. 1642-1659)</h3>
-                    <p class="text-gray-700 mb-3 text-justify"><span class="unicode-icon">⚔️</span>La Guerra Civil Inglesa (1642-1651) forjó el poder parlamentario contra el absolutismo de Carlos I. Cromwell, figura central, lideró la ejecución del rey (1649) y la abolición de la monarquía, estableciendo la Commonwealth.</p>
-                    <p class="text-gray-700 mb-3 text-justify"><span class="unicode-icon">📜</span>El Protectorado (1653) con Cromwell como Lord Protector operó bajo el "Instrument of Government", un intento temprano de constitución escrita. Sin embargo, su relación con los Parlamentos fue tensa, disolviéndolos a menudo y llevando a un gobierno de facto militar. La experiencia demostró que la monarquía no era invulnerable.</p>
+                    <p class="text-gray-700 mb-3 text-justify">La Guerra Civil Inglesa (1642-1651) forjó el poder parlamentario contra el absolutismo de Carlos I. Cromwell, figura central, lideró la ejecución del rey (1649) y la abolición de la monarquía, estableciendo la Commonwealth.</p>
+                    <p class="text-gray-700 mb-3 text-justify">El Protectorado (1653) con Cromwell como Lord Protector operó bajo el "Instrument of Government", un intento temprano de constitución escrita. Sin embargo, su relación con los Parlamentos fue tensa, disolviéndolos a menudo y llevando a un gobierno de facto militar. La experiencia demostró que la monarquía no era invulnerable.</p>
                 </div>
                 <div>
                     <h3 class="text-2xl font-semibold mb-2">Revolución Gloriosa y Declaración de Derechos (1688-1689)</h3>
-                    <p class="text-gray-700 mb-3 text-justify"><span class="unicode-icon">👑</span>Las políticas absolutistas de Jacobo II llevaron a su deposición. Guillermo de Orange y María fueron invitados al trono, consolidando la monarquía constitucional.</p>
-                    <p class="text-gray-700 mb-3 text-justify"><span class="unicode-icon">📄</span>La Declaración de Derechos (Bill of Rights, 1689) fue fundamental:</p>
+                    <p class="text-gray-700 mb-3 text-justify">Las políticas absolutistas de Jacobo II llevaron a su deposición. Guillermo de Orange y María fueron invitados al trono, consolidando la monarquía constitucional.</p>
+                    <p class="text-gray-700 mb-3 text-justify">La Declaración de Derechos (Bill of Rights, 1689) fue fundamental:</p>
                     <ul class="list-disc list-inside text-gray-700 ml-4 space-y-1 text-justify">
                         <li>Estableció la supremacía del Parlamento sobre la Corona.</li>
                         <li>Prohibió suspender leyes o recaudar impuestos sin consentimiento parlamentario.</li>
@@ -281,8 +356,8 @@
 
             <div>
                 <h3 class="text-2xl font-semibold mb-2">Surgimiento del Gabinete y Primer Ministro (S. XVIII)</h3>
-                <p class="text-gray-700 mb-3 text-justify"><span class="unicode-icon">🏛️</span>El Gabinete evolucionó del Consejo Privado. La ausencia de Jorge I (desde 1717) de las reuniones del Gabinete permitió que el ministro principal las presidiera.</p>
-                <p class="text-gray-700 mb-3 text-justify"><span class="unicode-icon">👨‍💼</span>Sir Robert Walpole (Primer Lord del Tesoro, 1721-1742) es considerado el primer Primer Ministro de facto. Gestionó el gobierno a través de la Cámara de los Comunes, asegurando mayorías parlamentarias. Esto marcó la transferencia del poder ejecutivo hacia ministros responsables ante el Parlamento, una evolución pragmática y no premeditada, ligada al sistema de partidos emergente (Whigs y Tories) y al principio de gobierno responsable.</p>
+                <p class="text-gray-700 mb-3 text-justify">El Gabinete evolucionó del Consejo Privado. La ausencia de Jorge I (desde 1717) de las reuniones del Gabinete permitió que el ministro principal las presidiera.</p>
+                <p class="text-gray-700 mb-3 text-justify">Sir Robert Walpole (Primer Lord del Tesoro, 1721-1742) es considerado el primer Primer Ministro de facto. Gestionó el gobierno a través de la Cámara de los Comunes, asegurando mayorías parlamentarias. Esto marcó la transferencia del poder ejecutivo hacia ministros responsables ante el Parlamento, una evolución pragmática y no premeditada, ligada al sistema de partidos emergente (Whigs y Tories) y al principio de gobierno responsable.</p>
                  <p class="text-gray-700 mt-3 text-justify">La dimisión de Lord North en 1782, pese a la confianza del Rey pero sin apoyo de los Comunes, reforzó que un gobierno no podía sobrevivir sin el respaldo de la cámara electa.</p>
             </div>
         </section>
@@ -294,7 +369,7 @@
             <div class="grid md:grid-cols-2 gap-8">
                 <div>
                     <h3 class="text-2xl font-semibold mb-2">Demandas de Reforma y la Gran Ley de 1832</h3>
-                    <p class="text-gray-700 mb-3 text-justify"><span class="unicode-icon">🗣️</span>A fines del S. XVIII, el sistema era poco democrático, dominado por élites. La Revolución Francesa inspiró demandas radicales de igualdad de derechos políticos. Existían "burgos podridos" (poca población, mucha representación) y ciudades industriales sin representación adecuada.</p>
+                    <p class="text-gray-700 mb-3 text-justify">A fines del S. XVIII, el sistema era poco democrático, dominado por élites. La Revolución Francesa inspiró demandas radicales de igualdad de derechos políticos. Existían "burgos podridos" (poca población, mucha representación) y ciudades industriales sin representación adecuada.</p>
                     <p class="text-gray-700 font-semibold mb-1 text-justify">Gran Ley de Reforma de 1832:</p>
                     <ul class="list-disc list-inside text-gray-700 ml-4 space-y-1 mb-3 text-justify">
                         <li>Eliminó 56 burgos podridos y redistribuyó escaños a ciudades industriales.</li>
@@ -310,7 +385,7 @@
 
                 <div>
                     <h3 class="text-2xl font-semibold mb-2">Movimiento Cartista (1838-1848)</h3>
-                    <p class="text-gray-700 mb-3 text-justify"><span class="unicode-icon">👎</span>Surgió de la insatisfacción de la clase trabajadora excluida por la Ley de 1832. La "Carta del Pueblo" (1838) demandaba:</p>
+                    <p class="text-gray-700 mb-3 text-justify">Surgió de la insatisfacción de la clase trabajadora excluida por la Ley de 1832. La "Carta del Pueblo" (1838) demandaba:</p>
                     <ul class="list-disc list-inside text-gray-700 ml-4 space-y-1 mb-3 text-justify">
                         <li>Sufragio universal masculino.</li>
                         <li>Voto secreto.</li>
@@ -322,7 +397,7 @@
                     <p class="text-gray-700 mb-3 text-justify">A pesar del rechazo de sus masivas peticiones, 5 de sus 6 demandas se lograron para 1918. El Cartismo fue crucial para la organización política de la clase trabajadora.</p>
 
                     <h3 class="text-2xl font-semibold mb-2 mt-6">Sistema de Partidos y Gobierno Responsable</h3>
-                    <p class="text-gray-700 mb-3 text-justify"><span class="unicode-icon">🗳️</span>Los Whigs y Tories evolucionaron a los partidos Liberal y Conservador, que dominaron la segunda mitad del siglo. El gobierno responsable se consolidó: el ejecutivo (Primer Ministro y Gabinete) debía tener la confianza de los Comunes para gobernar.</p>
+                    <p class="text-gray-700 mb-3 text-justify">Los Whigs y Tories evolucionaron a los partidos Liberal y Conservador, que dominaron la segunda mitad del siglo. El gobierno responsable se consolidó: el ejecutivo (Primer Ministro y Gabinete) debía tener la confianza de los Comunes para gobernar.</p>
                     <p class="text-gray-700 text-justify">La Ley de 1832 y el análisis de Bagehot ("The English Constitution") subrayaron la fusión de poder ejecutivo y legislativo como esencia del sistema.</p>
                 </div>
             </div>
@@ -335,7 +410,7 @@
             <div class="grid md:grid-cols-2 gap-8 mb-8">
                 <div>
                     <h3 class="text-2xl font-semibold mb-2">Leyes de Parlamento de 1911 y 1949</h3>
-                    <p class="text-gray-700 mb-3 text-justify"><span class="unicode-icon">🏛️</span>La crisis de 1909 por el "Presupuesto del Pueblo" (rechazado por los Lores) llevó a la Ley de Parlamento de 1911:</p>
+                    <p class="text-gray-700 mb-3 text-justify">La crisis de 1909 por el "Presupuesto del Pueblo" (rechazado por los Lores) llevó a la Ley de Parlamento de 1911:</p>
                     <ul class="list-disc list-inside text-gray-700 ml-4 space-y-1 mb-3 text-justify">
                         <li>Eliminó el veto absoluto de los Lores, otorgándoles un poder de retraso (2 años).</li>
                         <li>Los Lores no podían tocar "money bills".</li>
@@ -345,7 +420,7 @@
                 </div>
                 <div>
                     <h3 class="text-2xl font-semibold mb-2">Impacto de las Guerras Mundiales</h3>
-                    <p class="text-gray-700 mb-3 text-justify"><span class="unicode-icon">💣</span>Las guerras prolongaron Parlamentos, introdujeron sesiones secretas y fortalecieron al ejecutivo (Gabinetes de Guerra). La Cámara de los Comunes fue bombardeada en la SGM pero el Parlamento continuó.</p>
+                    <p class="text-gray-700 mb-3 text-justify">Las guerras prolongaron Parlamentos, introdujeron sesiones secretas y fortalecieron al ejecutivo (Gabinetes de Guerra). La Cámara de los Comunes fue bombardeada en la SGM pero el Parlamento continuó.</p>
                     <p class="text-gray-700 text-justify">Estos conflictos aceleraron el declive del Partido Liberal y el ascenso del Laborista, además de impulsar cambios sociales como el sufragio femenino (Ley de 1918: mujeres >30 con propiedad; Ley de 1928: igualdad total).</p>
                 </div>
             </div>
@@ -353,8 +428,8 @@
             <div class="grid md:grid-cols-2 gap-8">
                 <div>
                     <h3 class="text-2xl font-semibold mb-2">Ascenso del Partido Laborista y Oposición Oficial</h3>
-                    <p class="text-gray-700 mb-3 text-justify"><span class="unicode-icon">📈</span>Fundado en 1900, el Partido Laborista reemplazó a los Liberales como principal fuerza de izquierda en los 1920s, formando su primer gobierno en 1924. El sistema bipartidista Conservador-Laborista dominó el siglo.</p>
-                    <p class="text-gray-700 mb-3 text-justify"><span class="unicode-icon">🛡️</span>Se formalizó "La Leal Oposición de Su Majestad". La Ley de Ministros de la Corona (1937) otorgó salario al Líder de la Oposición. Funciones: oponerse, escrutar y ser alternativa de gobierno. Se crearon el Gabinete en la Sombra y los "Días de la Oposición".</p>
+                    <p class="text-gray-700 mb-3 text-justify">Fundado en 1900, el Partido Laborista reemplazó a los Liberales como principal fuerza de izquierda en los 1920s, formando su primer gobierno en 1924. El sistema bipartidista Conservador-Laborista dominó el siglo.</p>
+                    <p class="text-gray-700 mb-3 text-justify">Se formalizó "La Leal Oposición de Su Majestad". La Ley de Ministros de la Corona (1937) otorgó salario al Líder de la Oposición. Funciones: oponerse, escrutar y ser alternativa de gobierno. Se crearon el Gabinete en la Sombra y los "Días de la Oposición".</p>
                     <div class="chart-container mt-4">
                         <canvas id="labourPartyChart"></canvas>
                     </div>
@@ -362,7 +437,7 @@
                 </div>
                 <div>
                     <h3 class="text-2xl font-semibold mb-2">Poder del PM y Escrutinio Parlamentario</h3>
-                    <p class="text-gray-700 mb-3 text-justify"><span class="unicode-icon">👔</span>El poder del Primer Ministro y la Oficina del Gabinete (creada en 1916) crecieron, llevando a debates sobre un "gobierno de Primer Ministro".</p>
+                    <p class="text-gray-700 mb-3 text-justify">El poder del Primer Ministro y la Oficina del Gabinete (creada en 1916) crecieron, llevando a debates sobre un "gobierno de Primer Ministro".</p>
                     <p class="text-gray-700 mb-3 text-justify">El Parlamento adaptó mecanismos de escrutinio:</p>
                     <ul class="list-disc list-inside text-gray-700 ml-4 space-y-1 text-justify">
                         <li>Comités Selectos Departamentales (desde 1979): examinan gasto, administración y políticas.</li>
@@ -380,20 +455,20 @@
             <div class="grid md:grid-cols-2 gap-8">
                  <div>
                     <h3 class="text-2xl font-semibold mb-2">UE y Soberanía Parlamentaria</h3>
-                    <p class="text-gray-700 mb-3 text-justify"><span class="unicode-icon">🇪🇺</span>La adhesión a la CEE/UE en 1973 implicó la primacía del derecho de la UE sobre el nacional en áreas de competencia comunitaria. Esto generó debates sobre la erosión de la soberanía parlamentaria de Westminster.</p>
+                    <p class="text-gray-700 mb-3 text-justify">La adhesión a la CEE/UE en 1973 implicó la primacía del derecho de la UE sobre el nacional en áreas de competencia comunitaria. Esto generó debates sobre la erosión de la soberanía parlamentaria de Westminster.</p>
                     <p class="text-gray-700 text-justify">Algunos argumentaron una "soberanía compartida" voluntariamente, ya que el Parlamento británico conservava el poder de abandonar la UE, como finalmente sucedió.</p>
                 </div>
                 <div>
                     <h3 class="text-2xl font-semibold mb-2">Brexit y sus Implicaciones</h3>
-                    <p class="text-gray-700 mb-3 text-justify"><span class="unicode-icon">🇬🇧</span>El referéndum de 2016 y la salida formal en 2020 buscaron restaurar la supremacía legislativa del Parlamento. La Ley de Retirada de la UE (2018) transfirió el acervo comunitario al derecho interno, para ser modificado soberanamente.</p>
+                    <p class="text-gray-700 mb-3 text-justify">El referéndum de 2016 y la salida formal en 2020 buscaron restaurar la supremacía legislativa del Parlamento. La Ley de Retirada de la UE (2018) transfirió el acervo comunitario al derecho interno, para ser modificado soberanamente.</p>
                     <p class="text-gray-700 text-justify">Sin embargo, el Acuerdo de Comercio y Cooperación y el Protocolo de Irlanda del Norte imponen nuevas obligaciones y mecanismos de gobernanza conjunta. El Brexit ha aumentado la carga de trabajo y complejidad para el Parlamento.</p>
                 </div>
             </div>
             <div class="mt-6">
                 <h3 class="text-2xl font-semibold mb-2">Debates Contemporáneos</h3>
-                <p class="text-gray-700 mb-2 text-justify"><span class="unicode-icon">💬</span><strong>Reforma de la Cámara de los Lores:</strong> Tras la Ley de 1999 (reducción de pares hereditarios), persisten debates sobre su tamaño, composición (electa vs. designada) y poderes.</p>
-                <p class="text-gray-700 mb-2 text-justify"><span class="unicode-icon">📜</span><strong>Convenciones Constitucionales:</strong> Siguen siendo vitales en una constitución no codificada, pero su flexibilidad puede generar incertidumbre. Hay un movimiento hacia mayor codificación (Manual del Gabinete, Código Ministerial).</p>
-                <p class="text-gray-700 text-justify"><span class="unicode-icon">🔎</span><strong>Escrutinio del Ejecutivo:</strong> Preocupación constante por el equilibrio de poder. Se proponen reformas para fortalecer comités selectos y el escrutinio de legislación delegada y tratados.</p>
+                <p class="text-gray-700 mb-2 text-justify"><strong>Reforma de la Cámara de los Lores:</strong> Tras la Ley de 1999 (reducción de pares hereditarios), persisten debates sobre su tamaño, composición (electa vs. designada) y poderes.</p>
+                <p class="text-gray-700 mb-2 text-justify"><strong>Convenciones Constitucionales:</strong> Siguen siendo vitales en una constitución no codificada, pero su flexibilidad puede generar incertidumbre. Hay un movimiento hacia mayor codificación (Manual del Gabinete, Código Ministerial).</p>
+                <p class="text-gray-700 text-justify"><strong>Escrutinio del Ejecutivo:</strong> Preocupación constante por el equilibrio de poder. Se proponen reformas para fortalecer comités selectos y el escrutinio de legislación delegada y tratados.</p>
             </div>
         </section>
 
@@ -604,26 +679,26 @@
             
             <h3 class="text-2xl font-semibold mb-3">Principios Fundamentales Exportados:</h3>
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-                <div class="flowchart-step"><span class="unicode-icon">👑</span>Soberanía Parlamentaria (Adaptada)</div>
-                <div class="flowchart-step"><span class="unicode-icon">⚖️</span>Estado de Derecho</div>
-                <div class="flowchart-step"><span class="unicode-icon">🤝</span>Gobierno Responsable</div>
-                <div class="flowchart-step"><span class="unicode-icon">🏛️</span>Sistema de Partidos y Oposición</div>
-                <div class="flowchart-step"><span class="unicode-icon">📜</span>Convenciones Constitucionales</div>
-                <div class="flowchart-step"><span class="unicode-icon">🗣️</span>Procedimientos Parlamentarios</div>
+                <div class="flowchart-step">Soberanía Parlamentaria (Adaptada)</div>
+                <div class="flowchart-step">Estado de Derecho</div>
+                <div class="flowchart-step">Gobierno Responsable</div>
+                <div class="flowchart-step">Sistema de Partidos y Oposición</div>
+                <div class="flowchart-step">Convenciones Constitucionales</div>
+                <div class="flowchart-step">Procedimientos Parlamentarios</div>
             </div>
 
             <p class="mb-4 text-gray-700 text-justify">Sin embargo, el modelo se ha adaptado significativamente en cada contexto:</p>
             <div class="grid md:grid-cols-3 gap-6">
                 <div class="bg-slate-50 p-4 rounded shadow">
-                    <h4 class="font-semibold text-xl text-0077B6 mb-2">Canadá <span class="text-2xl">🇨🇦</span></h4>
+                    <h4 class="font-semibold text-xl text-0077B6 mb-2">Canadá </h4>
                     <p class="text-sm text-gray-600 text-justify">Adoptó una "constitución similar en principio". Adaptaciones clave: federalismo, Senado designado, Carta de Derechos y Libertades (1982) con revisión judicial.</p>
                 </div>
                 <div class="bg-slate-50 p-4 rounded shadow">
-                    <h4 class="font-semibold text-xl text-0077B6 mb-2">Australia <span class="text-2xl">🇦🇺</span></h4>
+                    <h4 class="font-semibold text-xl text-0077B6 mb-2">Australia </h4>
                     <p class="text-sm text-gray-600 text-justify">"Washminster": federalismo, Senado poderoso y electo con representación proporcional, constitución escrita y rígida, voto obligatorio.</p>
                 </div>
                 <div class="bg-slate-50 p-4 rounded shadow">
-                    <h4 class="font-semibold text-xl text-0077B6 mb-2">India <span class="text-2xl">🇮🇳</span></h4>
+                    <h4 class="font-semibold text-xl text-0077B6 mb-2">India </h4>
                     <p class="text-sm text-gray-600 text-justify">"Eastminster": república federal, constitución escrita con Derechos Fundamentales justiciables, rol del Presidente con poderes discrecionales, multipartidismo y coaliciones.</p>
                 </div>
             </div>
