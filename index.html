@@ -6,7 +6,7 @@
     <title>Infografía: Evolución del Parlamentarismo Británico</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- 
         Confirmación: NO se utiliza SVG.
         Confirmación: NO se utiliza Mermaid JS.
@@ -71,10 +71,25 @@
         html {
             scroll-behavior: smooth; /* Para un desplazamiento suave al hacer clic en los enlaces de navegación */
         }
+        :root {
+            --paper: #f7f0e1;
+            --paper-deep: #efe2c2;
+            --ink: #4a3a2a;
+            --ink-strong: #2e2116;
+            --accent: #b06b2e;
+            --accent-2: #7b4a1e;
+            --gold: #c59b4a;
+            --edge: #d8c6a4;
+            --shadow: rgba(61, 43, 30, 0.2);
+        }
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #F0F4F8;
-            color: #1E293B;
+            font-family: 'Cormorant Garamond', serif;
+            background-color: var(--paper);
+            color: var(--ink);
+            background-image:
+                radial-gradient(circle at 12% 12%, rgba(178, 128, 74, 0.12), transparent 42%),
+                radial-gradient(circle at 85% 20%, rgba(110, 79, 48, 0.12), transparent 40%),
+                linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(247, 240, 225, 0.9));
         }
         .chart-container {
             position: relative;
@@ -92,7 +107,7 @@
             }
         }
         .hero-bg {
-            background-image: url('https://www.londres.es/f/reino-unido/londres/guia/palacio-westminster.jpg'); /* Imagen de las Casas del Parlamento */
+            background-image: url('https://images.unsplash.com/photo-1453728013993-6d66e9c9123a?auto=format&fit=crop&w=1600&q=80'); /* Old map parchment */
             background-size: cover;
             background-position: center;
             position: relative;
@@ -104,38 +119,57 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: rgba(0, 0, 0, 0.5); /* Ajusta la opacidad según sea necesario */
+            background: linear-gradient(120deg, rgba(46, 33, 22, 0.82), rgba(78, 53, 33, 0.55));
             z-index: 1;
         }
         .hero-content {
             position: relative;
             z-index: 2;
+            text-shadow: 0 4px 18px rgba(0, 0, 0, 0.45);
         }
-        .accent-color { color: #FFB703; } /* Naranja Ámbar */
-        .accent-bg { background-color: #FFB703; }
-        .secondary-color { color: #00B4D8; } /* Azul Medio */
-        .secondary-bg { background-color: #00B4D8; }
+        .accent-color { color: var(--gold); }
+        .accent-bg { background-color: var(--gold); }
+        .secondary-color { color: var(--accent); }
+        .secondary-bg { background-color: var(--accent); }
         .section-card {
-            background-color: white;
+            background: linear-gradient(180deg, #fbf6ea, #f4ead5);
             border-radius: 0.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 12px 26px -14px var(--shadow);
             margin-bottom: 2rem;
             padding: 1.5rem;
+            border: 1px solid var(--edge);
+            position: relative;
         }
         h1, h2, h3 {
-            color: #0077B6; /* Azul Oscuro */
+            font-family: 'Cinzel', serif;
+            color: var(--ink-strong);
+            letter-spacing: 0.02em;
         }
         .hero-bg h1, .hero-bg p { /* Asegurar que el texto del encabezado sea blanco */
              color: white;
         }
         h2 {
-            border-bottom: 2px solid #FFB703; /* Naranja Ámbar */
+            border-bottom: 2px solid var(--gold);
             padding-bottom: 0.5rem;
             margin-bottom: 1rem;
         }
+        p, li {
+            font-size: 1.05rem;
+        }
+        #sticky-nav {
+            background-color: var(--paper-deep);
+            border-bottom: 1px solid var(--edge);
+        }
+        #sticky-nav a {
+            color: var(--ink);
+            letter-spacing: 0.02em;
+        }
+        #sticky-nav a:hover {
+            color: var(--accent-2);
+        }
         .flowchart-step {
-            background-color: #E0F7FA; /* Azul muy claro */
-            border: 1px solid #48CAE4;
+            background-color: #f6edda;
+            border: 1px solid var(--edge);
             padding: 0.75rem;
             border-radius: 0.375rem;
             text-align: center;
@@ -146,7 +180,7 @@
         }
         .flowchart-arrow {
             font-size: 1.5rem;
-            color: #0077B6;
+            color: var(--accent);
             text-align: center;
             line-height: 1;
             margin: 0.5rem 0;
@@ -154,7 +188,7 @@
         .unicode-icon {
             font-size: 1.5em;
             margin-right: 0.5em;
-            color: #0077B6;
+            color: var(--accent);
         }
         .timeline-image { /* Estilo para las imágenes en la línea de tiempo */
             width: 80px; /* Ancho fijo */
@@ -164,16 +198,27 @@
             margin-bottom: 0.75rem; /* Espacio debajo de la imagen */
         }
         .timeline-card {
-            background-color: white;
+            background-color: #fbf6ea;
             padding: 1rem;
             border-radius: 0.5rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-lg */
+            box-shadow: 0 12px 26px -14px var(--shadow);
             transition: all 0.3s ease-in-out;
+            border: 1px solid var(--edge);
         }
         .timeline-card:hover {
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); /* shadow-xl */
+            box-shadow: 0 16px 30px -12px var(--shadow);
             transform: scale(1.03);
         }
+        .text-0077B6 { color: var(--ink-strong); }
+        .text-0077B6.accent-color { color: var(--gold); }
+        .text-accent-color { color: var(--accent); }
+        .bg-FFB703 { background-color: var(--gold); }
+        .border-00B4D8 { border-color: var(--accent-2); }
+        .bg-slate-50 { background-color: #f4ead5; }
+        .text-gray-700 { color: #534231; }
+        .text-gray-600 { color: #6b5640; }
+        .text-gray-300 { color: #e8dcc7; }
+        .bg-gray-800 { background-color: #2b1f16; }
 
     </style>
 </head>
@@ -652,8 +697,8 @@
                     datasets: [{
                         label: 'Tamaño Estimado del Electorado (Inglaterra y Gales)',
                         data: [435000, 652000], 
-                        backgroundColor: ['#00B4D8', '#0077B6'],
-                        borderColor: ['#0096C7', '#005A8D'],
+                        backgroundColor: ['#c59b4a', '#b06b2e'],
+                        borderColor: ['#a57f3a', '#7b4a1e'],
                         borderWidth: 1
                     }]
                 },
@@ -685,16 +730,16 @@
                         {
                             label: 'Escaños Partido Laborista (Estimación Ilustrativa)',
                             data: [2, 40, 142, 287, 393], 
-                            borderColor: '#FFB703',
-                            backgroundColor: 'rgba(255, 183, 3, 0.1)',
+                            borderColor: '#c59b4a',
+                            backgroundColor: 'rgba(197, 155, 74, 0.12)',
                             fill: true,
                             tension: 0.1
                         },
                         {
                             label: 'Escaños Partido Liberal (Estimación Ilustrativa)',
                             data: [183, 272, 118, 59, 12], 
-                            borderColor: '#48CAE4',
-                            backgroundColor: 'rgba(72, 202, 228, 0.1)',
+                            borderColor: '#7b4a1e',
+                            backgroundColor: 'rgba(123, 74, 30, 0.1)',
                             fill: true,
                             tension: 0.1
                         }
