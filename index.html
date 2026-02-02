@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -7,227 +8,350 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;600&display=swap"
       rel="stylesheet"
     />
 
     <style>
+      :root {
+        --ink: #0b1020;
+        --paper: #f7f4ef;
+        --mist: #eef1f5;
+        --accent: #f05a28;
+        --accent-2: #2f80ed;
+        --accent-3: #16a34a;
+        --line: rgba(11, 16, 32, 0.15);
+        --glass: rgba(255, 255, 255, 0.7);
+        --shadow: 0 12px 35px rgba(11, 16, 32, 0.12);
+      }
+      * {
+        box-sizing: border-box;
+      }
       html {
-        scroll-behavior: smooth; /* Para un desplazamiento suave al hacer clic en los enlaces de navegación */
+        scroll-behavior: smooth;
       }
       body {
-        font-family: "Inter", sans-serif;
-        background-color: #f0f4f8;
-        color: #1e293b;
-      }
-      .chart-container {
-        position: relative;
-        width: 100%;
-        max-width: 600px;
-        margin-left: auto;
-        margin-right: auto;
-        height: 300px;
-        max-height: 350px;
-      }
-      @media (min-width: 768px) {
-        .chart-container {
-          height: 350px;
-          max-height: 400px;
-        }
-      }
-      .hero-bg {
-        background-image: url("https://www.londres.es/f/reino-unido/londres/guia/palacio-westminster.jpg"); /* Imagen de las Casas del Parlamento */
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
-        position: relative;
-      }
-      .hero-bg::before {
-        /* Capa oscura para legibilidad del texto */
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: rgba(
-          0,
-          0,
-          0,
-          0.5
-        ); /* Ajusta la opacidad según sea necesario */
-        z-index: 1;
-      }
-      .hero-content {
-        position: relative;
-        z-index: 2;
-      }
-      .accent-color {
-        color: #ffb703;
-      } /* Naranja Ámbar */
-      .accent-bg {
-        background-color: #ffb703;
-      }
-      .secondary-color {
-        color: #00b4d8;
-      } /* Azul Medio */
-      .secondary-bg {
-        background-color: #00b4d8;
-      }
-      .section-card {
-        background-color: white;
-        border-radius: 0.5rem;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-          0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        margin-bottom: 2rem;
-        padding: 1.5rem;
+        font-family: "Space Grotesk", sans-serif;
+        color: var(--ink);
+        background: radial-gradient(
+            1000px 600px at 10% -10%,
+            rgba(240, 90, 40, 0.18),
+            transparent 60%
+          ),
+          radial-gradient(
+            800px 500px at 90% 0%,
+            rgba(47, 128, 237, 0.18),
+            transparent 60%
+          ),
+          linear-gradient(180deg, #f7f4ef 0%, #edf1f7 100%);
+        min-height: 100vh;
       }
       h1,
       h2,
-      h3 {
-        color: #0077b6; /* Azul Oscuro */
+      h3,
+      h4 {
+        font-family: "Source Serif 4", serif;
+        letter-spacing: 0.2px;
       }
-      .hero-bg h1,
-      .hero-bg p {
-        /* Asegurar que el texto del encabezado sea blanco */
+      .hero {
+        position: relative;
+        overflow: hidden;
+        border-bottom: 1px solid var(--line);
+        background: linear-gradient(
+          120deg,
+          rgba(11, 16, 32, 0.9),
+          rgba(11, 16, 32, 0.7)
+        );
         color: white;
       }
-      h2 {
-        border-bottom: 2px solid #ffb703; /* Naranja Ámbar */
-        padding-bottom: 0.5rem;
-        margin-bottom: 1rem;
+      .hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: url("https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1920&auto=format&fit=crop")
+          center / cover;
+        mix-blend-mode: soft-light;
+        opacity: 0.9;
       }
-      .flowchart-step {
-        background-color: #e0f7fa; /* Azul muy claro */
-        border: 1px solid #48cae4;
-        padding: 0.75rem;
-        border-radius: 0.375rem;
-        text-align: center;
-        min-height: 60px;
-        display: flex;
+      .hero-content {
+        position: relative;
+        z-index: 1;
+      }
+      .halo {
+        position: absolute;
+        inset: -30% 0 auto;
+        height: 140%;
+        background: radial-gradient(
+          600px 600px at 30% 40%,
+          rgba(240, 90, 40, 0.4),
+          transparent 60%
+        );
+        opacity: 0.6;
+        filter: blur(30px);
+      }
+      .nav-glass {
+        backdrop-filter: blur(16px);
+        background: rgba(247, 244, 239, 0.85);
+        border-bottom: 1px solid var(--line);
+      }
+      .nav-link {
+        position: relative;
+        transition: color 0.2s ease;
+      }
+      .nav-link.active {
+        color: var(--accent);
+        font-weight: 600;
+      }
+      .nav-link.active::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -6px;
+        height: 3px;
+        background: var(--accent);
+        border-radius: 999px;
+      }
+      .section-card {
+        background: var(--glass);
+        border: 1px solid rgba(11, 16, 32, 0.08);
+        box-shadow: var(--shadow);
+        border-radius: 24px;
+        padding: 2rem;
+        position: relative;
+        overflow: hidden;
+      }
+      .section-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          120deg,
+          rgba(255, 255, 255, 0.8),
+          transparent 65%
+        );
+        opacity: 0;
+        transition: opacity 0.4s ease;
+      }
+      .section-card:hover::before {
+        opacity: 1;
+      }
+      .pill {
+        display: inline-flex;
         align-items: center;
-        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.35rem 0.9rem;
+        border-radius: 999px;
+        background: rgba(240, 90, 40, 0.12);
+        color: var(--accent);
+        font-weight: 600;
+        letter-spacing: 0.3px;
+        text-transform: uppercase;
+        font-size: 0.75rem;
       }
-      .flowchart-arrow {
-        font-size: 1.5rem;
-        color: #0077b6;
-        text-align: center;
-        line-height: 1;
-        margin: 0.5rem 0;
+      .grid-hero {
+        display: grid;
+        gap: 2rem;
+        grid-template-columns: 1.1fr 0.9fr;
       }
-      .unicode-icon {
-        font-size: 1.5em;
-        margin-right: 0.5em;
-        color: #0077b6;
+      .stat-card {
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 18px;
+        padding: 1.25rem;
+        display: grid;
+        gap: 0.5rem;
+        backdrop-filter: blur(10px);
       }
-      .timeline-image {
-        /* Estilo para las imágenes en la línea de tiempo */
-        width: 80px; /* Ancho fijo */
-        height: 80px; /* Alto fijo */
-        object-fit: cover; /* Asegura que la imagen cubra el espacio sin distorsionarse */
-        border-radius: 0.375rem; /* Esquinas redondeadas (md) */
-        margin-bottom: 0.75rem; /* Espacio debajo de la imagen */
+      .stat-number {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #ffd36a;
+      }
+      .chart-wrap {
+        background: white;
+        border-radius: 16px;
+        padding: 1rem;
+        border: 1px solid rgba(11, 16, 32, 0.08);
+      }
+      .timeline {
+        position: relative;
+        display: grid;
+        gap: 1.5rem;
+      }
+      .timeline::before {
+        content: "";
+        position: absolute;
+        left: 22px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: linear-gradient(
+          180deg,
+          rgba(240, 90, 40, 0.4),
+          rgba(47, 128, 237, 0.4)
+        );
+      }
+      .timeline-item {
+        display: grid;
+        grid-template-columns: 48px 1fr;
+        gap: 1.2rem;
+        position: relative;
+      }
+      .timeline-dot {
+        width: 16px;
+        height: 16px;
+        border-radius: 999px;
+        background: white;
+        border: 3px solid var(--accent);
+        margin-left: 15px;
+        box-shadow: 0 0 0 6px rgba(240, 90, 40, 0.12);
       }
       .timeline-card {
-        background-color: white;
-        padding: 1rem;
-        border-radius: 0.5rem;
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-          0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-lg */
-        transition: all 0.3s ease-in-out;
+        background: white;
+        border-radius: 18px;
+        padding: 1.25rem;
+        border: 1px solid rgba(11, 16, 32, 0.08);
+        box-shadow: 0 10px 24px rgba(11, 16, 32, 0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
       }
       .timeline-card:hover {
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
-          0 10px 10px -5px rgba(0, 0, 0, 0.04); /* shadow-xl */
-        transform: scale(1.03);
+        transform: translateY(-4px);
+        box-shadow: 0 16px 30px rgba(11, 16, 32, 0.12);
+      }
+      .timeline-image {
+        width: 100%;
+        max-width: 140px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 12px;
+        border: 1px solid rgba(11, 16, 32, 0.08);
+      }
+      .flow-grid {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      }
+      .flow-card {
+        background: white;
+        border-radius: 14px;
+        padding: 1rem;
+        border: 1px solid rgba(11, 16, 32, 0.08);
+        box-shadow: 0 8px 20px rgba(11, 16, 32, 0.08);
+        transition: transform 0.3s ease;
+      }
+      .flow-card:hover {
+        transform: translateY(-4px);
+      }
+      .glow {
+        position: absolute;
+        inset: auto -10% -40% -10%;
+        height: 50%;
+        background: radial-gradient(
+          400px 200px at 50% 0%,
+          rgba(47, 128, 237, 0.3),
+          transparent 70%
+        );
+        filter: blur(40px);
+        opacity: 0.6;
+      }
+      .reveal {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+      }
+      .reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .scroll-progress {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 3px;
+        width: 0%;
+        background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      }
+      @media (max-width: 960px) {
+        .grid-hero {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+        .reveal,
+        .reveal.is-visible {
+          transition: none;
+          opacity: 1;
+          transform: none;
+        }
       }
     </style>
   </head>
   <body class="leading-relaxed">
-    <header class="hero-bg text-white p-6 md:p-12 text-center">
-      <div class="hero-content">
-        <h1 class="text-4xl md:text-5xl font-bold mb-4">
-          La Evolución del Parlamentarismo Británico
-        </h1>
-        <p class="text-lg md:text-xl max-w-3xl mx-auto">
-          Un viaje a través de los siglos: de Cromwell al siglo XXI y su impacto
-          global.
-        </p>
+    <header class="hero">
+      <div class="halo"></div>
+      <div class="container mx-auto px-6 py-16 hero-content">
+        <div class="grid-hero">
+          <div>
+            <span class="pill">Infografía histórica</span>
+            <h1 class="text-4xl md:text-6xl font-semibold mt-4">
+              La Evolución del Parlamentarismo Británico
+            </h1>
+            <p class="mt-4 text-lg text-gray-200 max-w-2xl">
+              Un viaje visual desde Cromwell hasta el siglo XXI, trazando
+              reformas, crisis y el legado global del modelo Westminster.
+            </p>
+          </div>
+          <div class="grid gap-4">
+            <div class="stat-card">
+              <p class="text-sm uppercase tracking-widest text-gray-200">
+                Hitos principales
+              </p>
+              <div class="stat-number" data-count="12">0</div>
+              <p class="text-gray-100 text-sm">
+                Reformas clave y transformaciones institucionales.
+              </p>
+            </div>
+            <div class="stat-card">
+              <p class="text-sm uppercase tracking-widest text-gray-200">
+                Siglos cubiertos
+              </p>
+              <div class="stat-number" data-count="5">0</div>
+              <p class="text-gray-100 text-sm">
+                De la Guerra Civil a la era digital.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
+      <div class="glow"></div>
     </header>
 
-    <nav
-      id="sticky-nav"
-      class="sticky top-0 z-50 bg-white shadow-md hidden md:block"
-    >
+    <nav id="sticky-nav" class="sticky top-0 z-50 nav-glass">
+      <div class="scroll-progress" id="scroll-progress"></div>
       <div class="container mx-auto px-4">
-        <ul class="flex justify-center space-x-6 py-3">
-          <li>
-            <a
-              href="#introduccion"
-              class="text-gray-600 hover:text-0077B6 font-semibold"
-              >Introducción</a
-            >
-          </li>
-          <li>
-            <a
-              href="#siglo-xvii-xviii"
-              class="text-gray-600 hover:text-0077B6 font-semibold"
-              >S. XVII-XVIII</a
-            >
-          </li>
-          <li>
-            <a
-              href="#siglo-xix"
-              class="text-gray-600 hover:text-0077B6 font-semibold"
-              >S. XIX</a
-            >
-          </li>
-          <li>
-            <a
-              href="#siglo-xx"
-              class="text-gray-600 hover:text-0077B6 font-semibold"
-              >S. XX</a
-            >
-          </li>
-          <li>
-            <a
-              href="#siglo-xxi"
-              class="text-gray-600 hover:text-0077B6 font-semibold"
-              >S. XXI</a
-            >
-          </li>
-          <li>
-            <a
-              href="#linea-tiempo"
-              class="text-gray-600 hover:text-0077B6 font-semibold"
-              >Línea del Tiempo</a
-            >
-          </li>
-          <li>
-            <a
-              href="#influencia-global"
-              class="text-gray-600 hover:text-0077B6 font-semibold"
-              >Influencia Global</a
-            >
-          </li>
-          <li>
-            <a
-              href="#conclusion"
-              class="text-gray-600 hover:text-0077B6 font-semibold"
-              >Conclusión</a
-            >
-          </li>
+        <ul class="flex flex-wrap justify-center gap-6 py-4 text-sm font-medium">
+          <li><a class="nav-link" href="#introduccion">Introducción</a></li>
+          <li><a class="nav-link" href="#siglo-xvii-xviii">S. XVII-XVIII</a></li>
+          <li><a class="nav-link" href="#siglo-xix">S. XIX</a></li>
+          <li><a class="nav-link" href="#siglo-xx">S. XX</a></li>
+          <li><a class="nav-link" href="#siglo-xxi">S. XXI</a></li>
+          <li><a class="nav-link" href="#linea-tiempo">Línea del Tiempo</a></li>
+          <li><a class="nav-link" href="#influencia-global">Influencia Global</a></li>
+          <li><a class="nav-link" href="#conclusion">Conclusión</a></li>
         </ul>
       </div>
     </nav>
 
-    <main class="container mx-auto p-4 md:p-8">
-      <section id="introduccion" class="section-card scroll-mt-16">
+    <main class="container mx-auto px-6 py-10 space-y-10">
+      <section id="introduccion" class="section-card reveal scroll-mt-20">
         <h2 class="text-3xl font-semibold">
-          Introducción: El Legado de la "Madre de los Parlamentos"
+          Introducción: La Madre de los Parlamentos
         </h2>
-        <p class="mb-4 text-gray-700 text-justify">
+        <p class="mt-4 text-gray-700 text-justify">
           La evolución del parlamentarismo en el Reino Unido constituye un
           proceso histórico complejo que ha redefinido las relaciones entre la
           monarquía, el Parlamento y la ciudadanía. Desde la instauración de la
@@ -238,7 +362,7 @@
           transformaciones que consolidaron su carácter representativo y su
           capacidad de adaptación institucional.
         </p>
-        <p class="text-gray-700 text-justify">
+        <p class="mt-4 text-gray-700 text-justify">
           Mediante esta línea del tiempo se ofrece una visión cronológica y
           descriptiva de los momentos que marcaron la evolución del
           parlamentarismo británico. Este recorrido no solo permite identificar
@@ -248,896 +372,406 @@
         </p>
       </section>
 
-      <section id="siglo-xvii-xviii" class="section-card scroll-mt-16">
-        <h2 class="text-3xl font-semibold">
-          Siglos XVII-XVIII: Cimientos y Revoluciones
-        </h2>
-        <p class="mb-6 text-gray-700 text-justify">
-          El siglo XVII fue crucial, sentando las bases del parlamentarismo
-          moderno. Las tensiones entre Corona y Parlamento culminaron en guerra
-          civil, la ejecución de un rey, una república y la "Revolución
-          Gloriosa", que redefinió la constitución.
-        </p>
-
-        <div class="grid md:grid-cols-2 gap-6 mb-8">
-          <div>
-            <h3 class="text-2xl font-semibold mb-2">
-              Oliver Cromwell y el Parlamento (c. 1642-1659)
-            </h3>
-            <p class="text-gray-700 mb-3 text-justify">
-              <span class="unicode-icon">⚔️</span>La Guerra Civil Inglesa
-              (1642-1651) forjó el poder parlamentario contra el absolutismo de
-              Carlos I. Cromwell, figura central, lideró la ejecución del rey
-              (1649) y la abolición de la monarquía, estableciendo la
-              Commonwealth.
-            </p>
-            <p class="text-gray-700 mb-3 text-justify">
-              <span class="unicode-icon">📜</span>El Protectorado (1653) con
-              Cromwell como Lord Protector operó bajo el "Instrument of
-              Government", un intento temprano de constitución escrita. Sin
-              embargo, su relación con los Parlamentos fue tensa, disolviéndolos
-              a menudo y llevando a un gobierno de facto militar. La experiencia
-              demostró que la monarquía no era invulnerable.
-            </p>
-          </div>
-          <div>
-            <h3 class="text-2xl font-semibold mb-2">
-              Revolución Gloriosa y Declaración de Derechos (1688-1689)
-            </h3>
-            <p class="text-gray-700 mb-3 text-justify">
-              <span class="unicode-icon">👑</span>Las políticas absolutistas de
-              Jacobo II llevaron a su deposición. Guillermo de Orange y María
-              fueron invitados al trono, consolidando la monarquía
-              constitucional.
-            </p>
-            <p class="text-gray-700 mb-3 text-justify">
-              <span class="unicode-icon">📄</span>La Declaración de Derechos
-              (Bill of Rights, 1689) fue fundamental:
-            </p>
-            <ul
-              class="list-disc list-inside text-gray-700 ml-4 space-y-1 text-justify"
-            >
-              <li>Estableció la supremacía del Parlamento sobre la Corona.</li>
-              <li>
-                Prohibió suspender leyes o recaudar impuestos sin consentimiento
-                parlamentario.
-              </li>
-              <li>
-                Garantizó elecciones libres y libertad de expresión en el
-                Parlamento.
-              </li>
-              <li>Aseguró la convocatoria frecuente de Parlamentos.</li>
-            </ul>
-            <p class="text-gray-700 mt-3 text-justify">
-              Afianzó la supremacía parlamentaria y el control financiero como
-              pilar del poder parlamentario.
-            </p>
-          </div>
-        </div>
-
-        <div>
-          <h3 class="text-2xl font-semibold mb-2">
-            Surgimiento del Gabinete y Primer Ministro (S. XVIII)
-          </h3>
-          <p class="text-gray-700 mb-3 text-justify">
-            <span class="unicode-icon">🏛️</span>El Gabinete evolucionó del
-            Consejo Privado. La ausencia de Jorge I (desde 1717) de las
-            reuniones del Gabinete permitió que el ministro principal las
-            presidiera.
-          </p>
-          <p class="text-gray-700 mb-3 text-justify">
-            <span class="unicode-icon">👨‍💼</span>Sir Robert Walpole (Primer Lord
-            del Tesoro, 1721-1742) es considerado el primer Primer Ministro de
-            facto. Gestionó el gobierno a través de la Cámara de los Comunes,
-            asegurando mayorías parlamentarias. Esto marcó la transferencia del
-            poder ejecutivo hacia ministros responsables ante el Parlamento, una
-            evolución pragmática y no premeditada, ligada al sistema de partidos
-            emergente (Whigs y Tories) y al principio de gobierno responsable.
-          </p>
-          <p class="text-gray-700 mt-3 text-justify">
-            La dimisión de Lord North en 1782, pese a la confianza del Rey pero
-            sin apoyo de los Comunes, reforzó que un gobierno no podía
-            sobrevivir sin el respaldo de la cámara electa.
-          </p>
-        </div>
-      </section>
-
-      <section id="siglo-xix" class="section-card scroll-mt-16">
-        <h2 class="text-3xl font-semibold">
-          Siglo XIX: Hacia un Parlamento Moderno
-        </h2>
-        <p class="mb-6 text-gray-700 text-justify">
-          Este siglo transformó el Parlamento con reformas para hacerlo más
-          representativo ante la industrialización y urbanización, ampliando el
-          sufragio y consolidando el sistema de partidos y el gobierno
-          responsable.
-        </p>
-
-        <div class="grid md:grid-cols-2 gap-8">
-          <div>
-            <h3 class="text-2xl font-semibold mb-2">
-              Demandas de Reforma y la Gran Ley de 1832
-            </h3>
-            <p class="text-gray-700 mb-3 text-justify">
-              <span class="unicode-icon">🗣️</span>A fines del S. XVIII, el
-              sistema era poco democrático, dominado por élites. La Revolución
-              Francesa inspiró demandas radicales de igualdad de derechos
-              políticos. Existían "burgos podridos" (poca población, mucha
-              representación) y ciudades industriales sin representación
-              adecuada.
-            </p>
-            <p class="text-gray-700 font-semibold mb-1 text-justify">
-              Gran Ley de Reforma de 1832:
-            </p>
-            <ul
-              class="list-disc list-inside text-gray-700 ml-4 space-y-1 mb-3 text-justify"
-            >
-              <li>
-                Eliminó 56 burgos podridos y redistribuyó escaños a ciudades
-                industriales.
-              </li>
-              <li>
-                Amplió el sufragio a la clase media masculina propietaria (valor
-                de alquiler de £10).
-              </li>
-              <li>
-                Excluyó formalmente a las mujeres del voto (definió votante como
-                "persona masculina").
-              </li>
-            </ul>
-            <p class="text-gray-700 text-justify">
-              Aunque limitada, demostró que la reforma era posible y reforzó la
-              primacía de los Comunes. Le siguieron la Segunda (1867) y Tercera
-              (1884) Leyes de Reforma, ampliando más el sufragio masculino.
-            </p>
-            <div class="chart-container mt-4">
-              <canvas id="reformActChart"></canvas>
-            </div>
-            <p class="text-sm text-center text-gray-600 mt-1">
-              Ilustración del impacto (hipotético) de la Ley de Reforma de 1832
-              en el electorado.
-            </p>
-          </div>
-
-          <div>
-            <h3 class="text-2xl font-semibold mb-2">
-              Movimiento Cartista (1838-1848)
-            </h3>
-            <p class="text-gray-700 mb-3 text-justify">
-              <span class="unicode-icon">👎</span>Surgió de la insatisfacción de
-              la clase trabajadora excluida por la Ley de 1832. La "Carta del
-              Pueblo" (1838) demandaba:
-            </p>
-            <ul
-              class="list-disc list-inside text-gray-700 ml-4 space-y-1 mb-3 text-justify"
-            >
-              <li>Sufragio universal masculino.</li>
-              <li>Voto secreto.</li>
-              <li>Parlamentos anuales.</li>
-              <li>Distritos electorales iguales.</li>
-              <li>Pago a MPs.</li>
-              <li>Abolición del requisito de propiedad para ser MP.</li>
-            </ul>
-            <p class="text-gray-700 mb-3 text-justify">
-              A pesar del rechazo de sus masivas peticiones, 5 de sus 6 demandas
-              se lograron para 1918. El Cartismo fue crucial para la
-              organización política de la clase trabajadora.
-            </p>
-
-            <h3 class="text-2xl font-semibold mb-2 mt-6">
-              Sistema de Partidos y Gobierno Responsable
-            </h3>
-            <p class="text-gray-700 mb-3 text-justify">
-              <span class="unicode-icon">🗳️</span>Los Whigs y Tories
-              evolucionaron a los partidos Liberal y Conservador, que dominaron
-              la segunda mitad del siglo. El gobierno responsable se consolidó:
-              el ejecutivo (Primer Ministro y Gabinete) debía tener la confianza
-              de los Comunes para gobernar.
-            </p>
-            <p class="text-gray-700 text-justify">
-              La Ley de 1832 y el análisis de Bagehot ("The English
-              Constitution") subrayaron la fusión de poder ejecutivo y
-              legislativo como esencia del sistema.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section id="siglo-xx" class="section-card scroll-mt-16">
-        <h2 class="text-3xl font-semibold">
-          Siglo XX: Democracia de Masas y Poder Ejecutivo
-        </h2>
-        <p class="mb-6 text-gray-700 text-justify">
-          El siglo XX trajo guerras mundiales, sufragio universal y el ascenso
-          del Partido Laborista, redefiniendo la relación entre Comunes y Lores,
-          y expandiendo el poder del ejecutivo.
-        </p>
-
-        <div class="grid md:grid-cols-2 gap-8 mb-8">
-          <div>
-            <h3 class="text-2xl font-semibold mb-2">
-              Leyes de Parlamento de 1911 y 1949
-            </h3>
-            <p class="text-gray-700 mb-3 text-justify">
-              <span class="unicode-icon">🏛️</span>La crisis de 1909 por el
-              "Presupuesto del Pueblo" (rechazado por los Lores) llevó a la Ley
-              de Parlamento de 1911:
-            </p>
-            <ul
-              class="list-disc list-inside text-gray-700 ml-4 space-y-1 mb-3 text-justify"
-            >
-              <li>
-                Eliminó el veto absoluto de los Lores, otorgándoles un poder de
-                retraso (2 años).
-              </li>
-              <li>Los Lores no podían tocar "money bills".</li>
-              <li>Parlamentos de máximo 5 años.</li>
-            </ul>
-            <p class="text-gray-700 mb-3 text-justify">
-              La Ley de 1949 redujo el retraso de los Lores a 1 año. Esto
-              estableció la primacía definitiva de los Comunes electos.
-            </p>
-          </div>
-          <div>
-            <h3 class="text-2xl font-semibold mb-2">
-              Impacto de las Guerras Mundiales
-            </h3>
-            <p class="text-gray-700 mb-3 text-justify">
-              <span class="unicode-icon">💣</span>Las guerras prolongaron
-              Parlamentos, introdujeron sesiones secretas y fortalecieron al
-              ejecutivo (Gabinetes de Guerra). La Cámara de los Comunes fue
-              bombardeada en la SGM pero el Parlamento continuó.
-            </p>
-            <p class="text-gray-700 text-justify">
-              Estos conflictos aceleraron el declive del Partido Liberal y el
-              ascenso del Laborista, además de impulsar cambios sociales como el
-              sufragio femenino (Ley de 1918: mujeres >30 con propiedad; Ley de
-              1928: igualdad total).
-            </p>
-          </div>
-        </div>
-
-        <div class="grid md:grid-cols-2 gap-8">
-          <div>
-            <h3 class="text-2xl font-semibold mb-2">
-              Ascenso del Partido Laborista y Oposición Oficial
-            </h3>
-            <p class="text-gray-700 mb-3 text-justify">
-              <span class="unicode-icon">📈</span>Fundado en 1900, el Partido
-              Laborista reemplazó a los Liberales como principal fuerza de
-              izquierda en los 1920s, formando su primer gobierno en 1924. El
-              sistema bipartidista Conservador-Laborista dominó el siglo.
-            </p>
-            <p class="text-gray-700 mb-3 text-justify">
-              <span class="unicode-icon">🛡️</span>Se formalizó "La Leal
-              Oposición de Su Majestad". La Ley de Ministros de la Corona (1937)
-              otorgó salario al Líder de la Oposición. Funciones: oponerse,
-              escrutar y ser alternativa de gobierno. Se crearon el Gabinete en
-              la Sombra y los "Días de la Oposición".
-            </p>
-            <div class="chart-container mt-4">
-              <canvas id="labourPartyChart"></canvas>
-            </div>
-            <p class="text-sm text-center text-gray-600 mt-1">
-              Ilustración del ascenso (hipotético) del Partido Laborista.
-            </p>
-          </div>
-          <div>
-            <h3 class="text-2xl font-semibold mb-2">
-              Poder del PM y Escrutinio Parlamentario
-            </h3>
-            <p class="text-gray-700 mb-3 text-justify">
-              <span class="unicode-icon">👔</span>El poder del Primer Ministro y
-              la Oficina del Gabinete (creada en 1916) crecieron, llevando a
-              debates sobre un "gobierno de Primer Ministro".
-            </p>
-            <p class="text-gray-700 mb-3 text-justify">
-              El Parlamento adaptó mecanismos de escrutinio:
-            </p>
-            <ul
-              class="list-disc list-inside text-gray-700 ml-4 space-y-1 text-justify"
-            >
-              <li>
-                Comités Selectos Departamentales (desde 1979): examinan gasto,
-                administración y políticas.
-              </li>
-              <li>Preguntas Parlamentarias (PMQs) y Debates.</li>
-            </ul>
-            <p class="text-gray-700 mt-2 text-justify">
-              Persisten desafíos como el volumen de legislación delegada y el
-              apresuramiento de leyes.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section id="siglo-xxi" class="section-card scroll-mt-16">
-        <h2 class="text-3xl font-semibold">
-          Siglo XXI: Soberanía, Tradición y Nuevos Horizontes
-        </h2>
-        <p class="mb-6 text-gray-700 text-justify">
-          El siglo XXI ha desafiado principios fundamentales con la relación con
-          la UE y el Brexit, y continúan los debates sobre reformas
-          institucionales.
-        </p>
-
-        <div class="grid md:grid-cols-2 gap-8">
-          <div>
-            <h3 class="text-2xl font-semibold mb-2">
-              UE y Soberanía Parlamentaria
-            </h3>
-            <p class="text-gray-700 mb-3 text-justify">
-              <span class="unicode-icon">🇪🇺</span>La adhesión a la CEE/UE en
-              1973 implicó la primacía del derecho de la UE sobre el nacional en
-              áreas de competencia comunitaria. Esto generó debates sobre la
-              erosión de la soberanía parlamentaria de Westminster.
-            </p>
-            <p class="text-gray-700 text-justify">
-              Algunos argumentaron una "soberanía compartida" voluntariamente,
-              ya que el Parlamento británico conservava el poder de abandonar la
-              UE, como finalmente sucedió.
-            </p>
-          </div>
-          <div>
-            <h3 class="text-2xl font-semibold mb-2">
-              Brexit y sus Implicaciones
-            </h3>
-            <p class="text-gray-700 mb-3 text-justify">
-              <span class="unicode-icon">🇬🇧</span>El referéndum de 2016 y la
-              salida formal en 2020 buscaron restaurar la supremacía legislativa
-              del Parlamento. La Ley de Retirada de la UE (2018) transfirió el
-              acervo comunitario al derecho interno, para ser modificado
-              soberanamente.
-            </p>
-            <p class="text-gray-700 text-justify">
-              Sin embargo, el Acuerdo de Comercio y Cooperación y el Protocolo
-              de Irlanda del Norte imponen nuevas obligaciones y mecanismos de
-              gobernanza conjunta. El Brexit ha aumentado la carga de trabajo y
-              complejidad para el Parlamento.
-            </p>
-          </div>
-        </div>
-        <div class="mt-6">
-          <h3 class="text-2xl font-semibold mb-2">Debates Contemporáneos</h3>
-          <p class="text-gray-700 mb-2 text-justify">
-            <span class="unicode-icon">💬</span
-            ><strong>Reforma de la Cámara de los Lores:</strong> Tras la Ley de
-            1999 (reducción de pares hereditarios), persisten debates sobre su
-            tamaño, composición (electa vs. designada) y poderes.
-          </p>
-          <p class="text-gray-700 mb-2 text-justify">
-            <span class="unicode-icon">📜</span
-            ><strong>Convenciones Constitucionales:</strong> Siguen siendo
-            vitales en una constitución no codificada, pero su flexibilidad
-            puede generar incertidumbre. Hay un movimiento hacia mayor
-            codificación (Manual del Gabinete, Código Ministerial).
-          </p>
-          <p class="text-gray-700 text-justify">
-            <span class="unicode-icon">🔎</span
-            ><strong>Escrutinio del Ejecutivo:</strong> Preocupación constante
-            por el equilibrio de poder. Se proponen reformas para fortalecer
-            comités selectos y el escrutinio de legislación delegada y tratados.
-          </p>
-        </div>
-      </section>
-
-      <section id="linea-tiempo" class="section-card scroll-mt-16">
-        <h2 class="text-3xl font-semibold">
-          Línea del Tiempo: Eventos Importantes
-        </h2>
-        <p class="mb-6 text-gray-700 text-justify">
-          Un recorrido visual por los momentos más determinantes en la evolución
-          del parlamentarismo británico, con la información actualizada.
-        </p>
-        <div class="space-y-10">
-          <div class="flex items-start">
-            <div class="w-1/5 md:w-1/6 text-right pr-4 pt-1">
-              <p class="text-2xl font-bold text-accent-color">1649</p>
-            </div>
-            <div class="relative w-4/5 md:w-5/6">
-              <div
-                class="absolute h-full border-l-2 border-00B4D8 left-0 top-2 ml-[-1px]"
-              ></div>
-              <div
-                class="absolute w-5 h-5 bg-FFB703 rounded-full left-0 top-2 ml-[-10px] border-2 border-white"
-              ></div>
-              <div class="ml-8 timeline-card">
-                <img
-                  src=".\images\1649.jpg"
-                  alt="Imagen alusiva a la Proclamación de la Commonwealth"
-                  class="timeline-image"
-                  onerror="this.onerror=null;this.src='https://placehold.co/100x100/CCCCCC/FFFFFF?text=Error';"
-                />
-                <h4 class="font-semibold text-lg text-0077B6 mb-1">
-                  Proclamación de la Commonwealth de Inglaterra
-                </h4>
-                <p class="text-sm text-gray-600 text-justify">
-                  Tras la ejecución de Carlos I, Cromwell establece un gobierno
-                  republicano, suprimiendo la monarquía. Inicio de un
-                  experimento parlamentario sin precedentes.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="flex items-start">
-            <div class="w-1/5 md:w-1/6 text-right pr-4 pt-1">
-              <p class="text-2xl font-bold text-accent-color">1653</p>
-            </div>
-            <div class="relative w-4/5 md:w-5/6">
-              <div
-                class="absolute h-full border-l-2 border-00B4D8 left-0 top-2 ml-[-1px]"
-              ></div>
-              <div
-                class="absolute w-5 h-5 bg-FFB703 rounded-full left-0 top-2 ml-[-10px] border-2 border-white"
-              ></div>
-              <div class="ml-8 timeline-card">
-                <img
-                  src=".\images\1653.jpg"
-                  alt="Imagen alusiva al Protectorado de Oliver Cromwell"
-                  class="timeline-image"
-                  onerror="this.onerror=null;this.src='https://placehold.co/100x100/CCCCCC/FFFFFF?text=Error';"
-                />
-                <h4 class="font-semibold text-lg text-0077B6 mb-1">
-                  Protectorado de Oliver Cromwell
-                </h4>
-                <p class="text-sm text-gray-600 text-justify">
-                  Cromwell se autoproclama Lord Protector mediante el
-                  Instrumento de Gobierno, la primera constitución escrita.
-                  Aunque formalmente hay un Parlamento, en la práctica el poder
-                  está centralizado. La experiencia sienta las bases para
-                  debatir sobre la división de poderes.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="flex items-start">
-            <div class="w-1/5 md:w-1/6 text-right pr-4 pt-1">
-              <p class="text-2xl font-bold text-accent-color">1660</p>
-            </div>
-            <div class="relative w-4/5 md:w-5/6">
-              <div
-                class="absolute h-full border-l-2 border-00B4D8 left-0 top-2 ml-[-1px]"
-              ></div>
-              <div
-                class="absolute w-5 h-5 bg-FFB703 rounded-full left-0 top-2 ml-[-10px] border-2 border-white"
-              ></div>
-              <div class="ml-8 timeline-card">
-                <img
-                  src=".\images\1660.jpg"
-                  alt="Imagen alusiva a la Restauración de la Monarquía"
-                  class="timeline-image"
-                  onerror="this.onerror=null;this.src='https://placehold.co/100x100/CCCCCC/FFFFFF?text=Error';"
-                />
-                <h4 class="font-semibold text-lg text-0077B6 mb-1">
-                  Restauración de la Monarquía
-                </h4>
-                <p class="text-sm text-gray-600 text-justify">
-                  Con Carlos II regresa la monarquía, pero ya no con poder
-                  absoluto. Se reconoce el papel del Parlamento como contrapeso
-                  institucional.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="flex items-start">
-            <div class="w-1/5 md:w-1/6 text-right pr-4 pt-1">
-              <p class="text-2xl font-bold text-accent-color">1688</p>
-            </div>
-            <div class="relative w-4/5 md:w-5/6">
-              <div
-                class="absolute h-full border-l-2 border-00B4D8 left-0 top-2 ml-[-1px]"
-              ></div>
-              <div
-                class="absolute w-5 h-5 bg-FFB703 rounded-full left-0 top-2 ml-[-10px] border-2 border-white"
-              ></div>
-              <div class="ml-8 timeline-card">
-                <img
-                  src=".\images\1688.jpg"
-                  alt="Imagen alusiva a la Revolución Gloriosa"
-                  class="timeline-image"
-                  onerror="this.onerror=null;this.src='https://placehold.co/100x100/CCCCCC/FFFFFF?text=Error';"
-                />
-                <h4 class="font-semibold text-lg text-0077B6 mb-1">
-                  Revolución Gloriosa
-                </h4>
-                <p class="text-sm text-gray-600 text-justify">
-                  Guillermo de Orange asume el trono tras la huida de Jacobo II.
-                  Se consolida el principio de soberanía parlamentaria y se
-                  limita el poder real.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="flex items-start">
-            <div class="w-1/5 md:w-1/6 text-right pr-4 pt-1">
-              <p class="text-2xl font-bold text-accent-color">1689</p>
-            </div>
-            <div class="relative w-4/5 md:w-5/6">
-              <div
-                class="absolute h-full border-l-2 border-00B4D8 left-0 top-2 ml-[-1px]"
-              ></div>
-              <div
-                class="absolute w-5 h-5 bg-FFB703 rounded-full left-0 top-2 ml-[-10px] border-2 border-white"
-              ></div>
-              <div class="ml-8 timeline-card">
-                <img
-                  src=".\images\1689.jpg"
-                  alt="Imagen alusiva a la Declaración de Derechos"
-                  class="timeline-image"
-                  onerror="this.onerror=null;this.src='https://placehold.co/100x100/CCCCCC/FFFFFF?text=Error';"
-                />
-                <h4 class="font-semibold text-lg text-0077B6 mb-1">
-                  Declaración de Derechos (Bill of Rights)
-                </h4>
-                <p class="text-sm text-gray-600 text-justify">
-                  Este documento afirma la supremacía del Parlamento sobre la
-                  Corona, consagrando derechos fundamentales y estableciendo una
-                  monarquía constitucional.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="flex items-start">
-            <div class="w-1/5 md:w-1/6 text-right pr-4 pt-1">
-              <p class="text-2xl font-bold text-accent-color">1707</p>
-            </div>
-            <div class="relative w-4/5 md:w-5/6">
-              <div
-                class="absolute h-full border-l-2 border-00B4D8 left-0 top-2 ml-[-1px]"
-              ></div>
-              <div
-                class="absolute w-5 h-5 bg-FFB703 rounded-full left-0 top-2 ml-[-10px] border-2 border-white"
-              ></div>
-              <div class="ml-8 timeline-card">
-                <img
-                  src=".\images\1707.jpg"
-                  alt="Imagen alusiva al Acta de Unión"
-                  class="timeline-image"
-                  onerror="this.onerror=null;this.src='https://placehold.co/100x100/CCCCCC/FFFFFF?text=Error';"
-                />
-                <h4 class="font-semibold text-lg text-0077B6 mb-1">
-                  Acta de Unión entre Inglaterra y Escocia
-                </h4>
-                <p class="text-sm text-gray-600 text-justify">
-                  Se crea el Parlamento del Reino Unido de Gran Bretaña. Esta
-                  unificación fortalece el modelo parlamentario británico.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="flex items-start">
-            <div class="w-1/5 md:w-1/6 text-right pr-4 pt-1">
-              <p class="text-2xl font-bold text-accent-color">1832</p>
-            </div>
-            <div class="relative w-4/5 md:w-5/6">
-              <div
-                class="absolute h-full border-l-2 border-00B4D8 left-0 top-2 ml-[-1px]"
-              ></div>
-              <div
-                class="absolute w-5 h-5 bg-FFB703 rounded-full left-0 top-2 ml-[-10px] border-2 border-white"
-              ></div>
-              <div class="ml-8 timeline-card">
-                <img
-                  src=".\images\1832.jpg"
-                  alt="Imagen alusiva a la Primera Reforma Electoral"
-                  class="timeline-image"
-                  onerror="this.onerror=null;this.src='https://placehold.co/100x100/CCCCCC/FFFFFF?text=Error';"
-                />
-                <h4 class="font-semibold text-lg text-0077B6 mb-1">
-                  Primera Reforma Electoral (Great Reform Act)
-                </h4>
-                <p class="text-sm text-gray-600 text-justify">
-                  Amplía el sufragio y redistribuye escaños, eliminando
-                  "boroughs podridos". Representa un avance hacia una democracia
-                  representativa.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="flex items-start">
-            <div class="w-1/5 md:w-1/6 text-right pr-4 pt-1">
-              <p class="text-2xl font-bold text-accent-color">1867 y 1884</p>
-            </div>
-            <div class="relative w-4/5 md:w-5/6">
-              <div
-                class="absolute h-full border-l-2 border-00B4D8 left-0 top-2 ml-[-1px]"
-              ></div>
-              <div
-                class="absolute w-5 h-5 bg-FFB703 rounded-full left-0 top-2 ml-[-10px] border-2 border-white"
-              ></div>
-              <div class="ml-8 timeline-card">
-                <img
-                  src=".\images\1867.jpg"
-                  alt="Imagen alusiva a las Reformas Electorales Posteriores"
-                  class="timeline-image"
-                  onerror="this.onerror=null;this.src='https://placehold.co/100x100/CCCCCC/FFFFFF?text=Error';"
-                />
-                <h4 class="font-semibold text-lg text-0077B6 mb-1">
-                  Reformas Electorales Posteriores
-                </h4>
-                <p class="text-sm text-gray-600 text-justify">
-                  e amplía el sufragio a trabajadores urbanos y rurales. Se
-                  sientan las bases del sufragio masculino universal.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="flex items-start">
-            <div class="w-1/5 md:w-1/6 text-right pr-4 pt-1">
-              <p class="text-2xl font-bold text-accent-color">1911</p>
-            </div>
-            <div class="relative w-4/5 md:w-5/6">
-              <div
-                class="absolute h-full border-l-2 border-00B4D8 left-0 top-2 ml-[-1px]"
-              ></div>
-              <div
-                class="absolute w-5 h-5 bg-FFB703 rounded-full left-0 top-2 ml-[-10px] border-2 border-white"
-              ></div>
-              <div class="ml-8 timeline-card">
-                <img
-                  src=".\images\1911.jpg"
-                  alt="Imagen alusiva al Acta del Parlamento de 1911"
-                  class="timeline-image"
-                  onerror="this.onerror=null;this.src='https://placehold.co/100x100/CCCCCC/FFFFFF?text=Error';"
-                />
-                <h4 class="font-semibold text-lg text-0077B6 mb-1">
-                  Acta del Parlamento
-                </h4>
-                <p class="text-sm text-gray-600 text-justify">
-                  Se reduce el poder de la Cámara de los Lores, reafirmando la
-                  autoridad de la Cámara de los Comunes. Se fortalece el
-                  gobierno representativo.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="flex items-start">
-            <div class="w-1/5 md:w-1/6 text-right pr-4 pt-1">
-              <p class="text-2xl font-bold text-accent-color">1928</p>
-            </div>
-            <div class="relative w-4/5 md:w-5/6">
-              <div
-                class="absolute h-full border-l-2 border-00B4D8 left-0 top-2 ml-[-1px]"
-              ></div>
-              <div
-                class="absolute w-5 h-5 bg-FFB703 rounded-full left-0 top-2 ml-[-10px] border-2 border-white"
-              ></div>
-              <div class="ml-8 timeline-card">
-                <img
-                  src=".\images\1928.jpg"
-                  alt="Imagen alusiva al Sufragio Femenino Pleno"
-                  class="timeline-image"
-                  onerror="this.onerror=null;this.src='https://placehold.co/100x100/CCCCCC/FFFFFF?text=Error';"
-                />
-                <h4 class="font-semibold text-lg text-0077B6 mb-1">
-                  Sufragio Femenino Pleno
-                </h4>
-                <p class="text-sm text-gray-600 text-justify">
-                  Se garantiza el derecho al voto a todas las mujeres mayores de
-                  21 años. Se amplía la base democrática del Parlamento.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="flex items-start">
-            <div class="w-1/5 md:w-1/6 text-right pr-4 pt-1">
-              <p class="text-2xl font-bold text-accent-color">1999</p>
-            </div>
-            <div class="relative w-4/5 md:w-5/6">
-              <div
-                class="absolute h-full border-l-2 border-00B4D8 left-0 top-2 ml-[-1px]"
-              ></div>
-              <div
-                class="absolute w-5 h-5 bg-FFB703 rounded-full left-0 top-2 ml-[-10px] border-2 border-white"
-              ></div>
-              <div class="ml-8 timeline-card">
-                <img
-                  src=".\images\1999.jpg"
-                  alt="Imagen alusiva a la Reforma de la Cámara de los Lores"
-                  class="timeline-image"
-                  onerror="this.onerror=null;this.src='https://placehold.co/100x100/CCCCCC/FFFFFF?text=Error';"
-                />
-                <h4 class="font-semibold text-lg text-0077B6 mb-1">
-                  Reforma de la Cámara de los Lores
-                </h4>
-                <p class="text-sm text-gray-600 text-justify">
-                  Se elimina el derecho hereditario de la mayoría de los lores.
-                  Se busca una cámara alta más meritocrática y representativa.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="flex items-start">
-            <div class="w-1/5 md:w-1/6 text-right pr-4 pt-1">
-              <p class="text-2xl font-bold text-accent-color">2016</p>
-            </div>
-            <div class="relative w-4/5 md:w-5/6">
-              <div
-                class="absolute h-full border-l-2 border-00B4D8 left-0 top-2 ml-[-1px]"
-              ></div>
-              <div
-                class="absolute w-5 h-5 bg-FFB703 rounded-full left-0 top-2 ml-[-10px] border-2 border-white"
-              ></div>
-              <div class="ml-8 timeline-card">
-                <img
-                  src=".\images\2016.jpg"
-                  alt="Imagen alusiva al Referéndum del Brexit"
-                  class="timeline-image"
-                  onerror="this.onerror=null;this.src='https://placehold.co/100x100/CCCCCC/FFFFFF?text=Error';"
-                />
-                <h4 class="font-semibold text-lg text-0077B6 mb-1">
-                  Referéndum del Brexit
-                </h4>
-                <p class="text-sm text-gray-600 text-justify">
-                  El Parlamento se enfrenta a la decisión de salir de la Unión
-                  Europea. Muestra la tensión entre soberanía parlamentaria y
-                  voluntad popular.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="flex items-start">
-            <div class="w-1/5 md:w-1/6 text-right pr-4 pt-1">
-              <p class="text-2xl font-bold text-accent-color">2020-2021</p>
-            </div>
-            <div class="relative w-4/5 md:w-5/6">
-              <div
-                class="absolute w-5 h-5 bg-FFB703 rounded-full left-0 top-2 ml-[-10px] border-2 border-white"
-              ></div>
-              <div class="ml-8 timeline-card">
-                <img
-                  src=".\images\2020.jpg"
-                  alt="Imagen alusiva al Parlamento durante la Pandemia de COVID-19"
-                  class="timeline-image"
-                  onerror="this.onerror=null;this.src='https://placehold.co/100x100/CCCCCC/FFFFFF?text=Error';"
-                />
-                <h4 class="font-semibold text-lg text-0077B6 mb-1">
-                  Pandemia de COVID-19
-                </h4>
-                <p class="text-sm text-gray-600 text-justify">
-                  El Parlamento se adapta a sesiones remotas. Se aprueban leyes
-                  de emergencia como la Coronavirus Act, demostrando resiliencia
-                  institucional.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="influencia-global" class="section-card scroll-mt-16">
-        <h2 class="text-3xl font-semibold">
-          Influencia Global: El Modelo de Westminster
-        </h2>
-        <p class="mb-4 text-gray-700 text-justify">
-          La tradición parlamentaria anglosajona ha influido en democracias de
-          todo el mundo, especialmente en la Commonwealth. Principios como la
-          soberanía parlamentaria (adaptada), el gobierno responsable, el
-          sistema de partidos con oposición organizada y las convenciones
-          constitucionales han sido ampliamente exportados.
-        </p>
-
-        <h3 class="text-2xl font-semibold mb-3">
-          Principios Fundamentales Exportados:
-        </h3>
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-          <div class="flowchart-step">
-            <span class="unicode-icon">👑</span>Soberanía Parlamentaria
-            (Adaptada)
-          </div>
-          <div class="flowchart-step">
-            <span class="unicode-icon">⚖️</span>Estado de Derecho
-          </div>
-          <div class="flowchart-step">
-            <span class="unicode-icon">🤝</span>Gobierno Responsable
-          </div>
-          <div class="flowchart-step">
-            <span class="unicode-icon">🏛️</span>Sistema de Partidos y Oposición
-          </div>
-          <div class="flowchart-step">
-            <span class="unicode-icon">📜</span>Convenciones Constitucionales
-          </div>
-          <div class="flowchart-step">
-            <span class="unicode-icon">🗣️</span>Procedimientos Parlamentarios
-          </div>
-        </div>
-
-        <p class="mb-4 text-gray-700 text-justify">
-          Sin embargo, el modelo se ha adaptado significativamente en cada
-          contexto:
-        </p>
-        <div class="grid md:grid-cols-3 gap-6">
-          <div class="bg-slate-50 p-4 rounded shadow">
-            <h4 class="font-semibold text-xl text-0077B6 mb-2">
-              Canadá <span class="text-2xl">🇨🇦</span>
-            </h4>
-            <p class="text-sm text-gray-600 text-justify">
-              Adoptó una "constitución similar en principio". Adaptaciones
-              clave: federalismo, Senado designado, Carta de Derechos y
-              Libertades (1982) con revisión judicial.
-            </p>
-          </div>
-          <div class="bg-slate-50 p-4 rounded shadow">
-            <h4 class="font-semibold text-xl text-0077B6 mb-2">
-              Australia <span class="text-2xl">🇦🇺</span>
-            </h4>
-            <p class="text-sm text-gray-600 text-justify">
-              "Washminster": federalismo, Senado poderoso y electo con
-              representación proporcional, constitución escrita y rígida, voto
-              obligatorio.
-            </p>
-          </div>
-          <div class="bg-slate-50 p-4 rounded shadow">
-            <h4 class="font-semibold text-xl text-0077B6 mb-2">
-              India <span class="text-2xl">🇮🇳</span>
-            </h4>
-            <p class="text-sm text-gray-600 text-justify">
-              "Eastminster": república federal, constitución escrita con
-              Derechos Fundamentales justiciables, rol del Presidente con
-              poderes discrecionales, multipartidismo y coaliciones.
-            </p>
-          </div>
+      <section id="siglo-xvii-xviii" class="section-card reveal scroll-mt-20">
+        <div class="flex items-center justify-between flex-wrap gap-4">
+          <h2 class="text-3xl font-semibold">
+            Siglos XVII-XVIII: Cimientos y Revoluciones
+          </h2>
+          <span class="pill">Cimientos</span>
         </div>
         <p class="mt-4 text-gray-700 text-justify">
-          Estos ejemplos muestran cómo cada nación ha tejido los hilos de
-          Westminster en su propio tapiz constitucional, creando sistemas únicos
-          que, aunque comparten un linaje, operan de maneras distintivas.
+          El siglo XVII fue crucial, sentando las bases del parlamentarismo
+          moderno. Las tensiones entre Corona y Parlamento culminaron en guerra
+          civil, la ejecución de un rey, una república y la Revolución
+          Gloriosa, que redefinió la constitución.
         </p>
+
+        <div class="grid md:grid-cols-2 gap-8 mt-6">
+          <div class="space-y-4">
+            <h3 class="text-2xl font-semibold">Oliver Cromwell y el Parlamento</h3>
+            <p class="text-gray-700 text-justify">
+              La Guerra Civil Inglesa (1642-1651) forjó el poder parlamentario
+              contra el absolutismo de Carlos I. Cromwell, figura central,
+              lideró la ejecución del rey (1649) y la abolición de la monarquía,
+              estableciendo la Commonwealth.
+            </p>
+            <p class="text-gray-700 text-justify">
+              El Protectorado (1653) con Cromwell como Lord Protector operó
+              bajo el Instrument of Government, un intento temprano de
+              constitución escrita. La experiencia demostró que la monarquía no
+              era invulnerable.
+            </p>
+          </div>
+          <div class="space-y-4">
+            <h3 class="text-2xl font-semibold">Revolución Gloriosa y Derechos</h3>
+            <p class="text-gray-700 text-justify">
+              Guillermo de Orange y María consolidaron la monarquía
+              constitucional. El Bill of Rights (1689) estableció la supremacía
+              del Parlamento, prohibió impuestos sin consentimiento y garantizó
+              elecciones libres.
+            </p>
+            <div class="chart-wrap">
+              <canvas id="reformActChart"></canvas>
+              <p class="text-xs text-gray-500 text-center mt-2">
+                Impacto hipotético de la Ley de Reforma de 1832 en el electorado.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-8">
+          <h3 class="text-2xl font-semibold">
+            Surgimiento del Gabinete y Primer Ministro
+          </h3>
+          <p class="mt-3 text-gray-700 text-justify">
+            La ausencia de Jorge I en reuniones de gabinete permitió que el
+            ministro principal las presidiera. Sir Robert Walpole es
+            considerado el primer Primer Ministro de facto, consolidando un
+            ejecutivo responsable ante los Comunes.
+          </p>
+        </div>
+      </section>
+      <section id="siglo-xix" class="section-card reveal scroll-mt-20">
+        <div class="flex items-center justify-between flex-wrap gap-4">
+          <h2 class="text-3xl font-semibold">Siglo XIX: Parlamento Moderno</h2>
+          <span class="pill">Reformas</span>
+        </div>
+        <p class="mt-4 text-gray-700 text-justify">
+          El siglo XIX transformó el Parlamento con reformas para hacerlo más
+          representativo ante la industrialización y urbanización, ampliando el
+          sufragio y consolidando el sistema de partidos.
+        </p>
+        <div class="grid md:grid-cols-2 gap-8 mt-6">
+          <div class="space-y-4">
+            <h3 class="text-2xl font-semibold">Gran Ley de 1832</h3>
+            <ul class="list-disc list-inside text-gray-700 space-y-1">
+              <li>Eliminó burgos podridos y redistribuyó escaños.</li>
+              <li>Amplió el sufragio a la clase media masculina propietaria.</li>
+              <li>Formalizó la exclusión de mujeres del voto.</li>
+            </ul>
+            <p class="text-gray-700 text-justify">
+              Le siguieron la Segunda (1867) y Tercera (1884) Reformas,
+              ampliando el sufragio masculino.
+            </p>
+          </div>
+          <div class="space-y-4">
+            <h3 class="text-2xl font-semibold">Movimiento Cartista</h3>
+            <p class="text-gray-700 text-justify">
+              La Carta del Pueblo (1838) exigía sufragio universal masculino,
+              voto secreto y abolición del requisito de propiedad para ser MP.
+              Cinco de sus seis demandas se lograron para 1918.
+            </p>
+            <div class="chart-wrap">
+              <canvas id="labourPartyChart"></canvas>
+              <p class="text-xs text-gray-500 text-center mt-2">
+                Evolución ilustrativa de escaños en partidos clave.
+              </p>
+            </div>
+          </div>
+        </div>
       </section>
 
-      <section id="conclusion" class="section-card scroll-mt-16 text-center">
-        <h2 class="text-3xl font-semibold">
-          Conclusión: Un Legado en Constante Evolución
-        </h2>
-        <p class="mb-4 text-gray-700 max-w-2xl mx-auto text-justify">
-          A lo largo de los últimos tiempos, el parlamentarismo en el Reino
-          Unido ha evolucionado de un sistema marcado por tensiones entre la
-          monarquía y el poder legislativo hacia una institución más estable y
-          representativa. Los eventos históricos plasmados dejan observar un
-          proceso gradual de maduración política, donde el Parlamento ha logrado
-          consolidar su supremacía y ampliar la participación ciudadana mediante
-          reformas electorales y limitaciones al poder real. Este desarrollo no
-          ha sido lineal ni exento de dificultades, como las crisis políticas
-          recientes y la adaptación a contextos actuales más complejos, pero ha
-          demostrado una notable capacidad para reinventarse y responder a las
-          demandas sociales y políticas.
+      <section id="siglo-xx" class="section-card reveal scroll-mt-20">
+        <div class="flex items-center justify-between flex-wrap gap-4">
+          <h2 class="text-3xl font-semibold">Siglo XX: Democracia de Masas</h2>
+          <span class="pill">Expansión</span>
+        </div>
+        <p class="mt-4 text-gray-700 text-justify">
+          Guerras mundiales, sufragio universal y el ascenso del Partido
+          Laborista redefinieron la relación entre Comunes y Lores y ampliaron
+          el poder ejecutivo.
         </p>
-        <p class="text-gray-700 max-w-2xl mx-auto text-justify">
-          El análisis histórico revela cómo el parlamentarismo británico, lejos
-          de ser un sistema estático, está alcanzado un equilibrio dinámico
-          entre tradición y modernidad. Esta madurez se manifiesta en su
-          resiliencia ante conflictos internos y externos, en la ampliación
-          progresiva de derechos políticos, y en la consolidación de un marco
-          institucional que equilibra poderes y asegura la representación. Así,
-          el parlamentarismo del Reino Unido se presenta como un modelo en
-          constante evolución, cuya comprensión es importante para estudiar la
-          formación y adaptación de las democráticas actuales.
+        <div class="grid md:grid-cols-2 gap-8 mt-6">
+          <div class="space-y-4">
+            <h3 class="text-2xl font-semibold">Leyes de Parlamento</h3>
+            <ul class="list-disc list-inside text-gray-700 space-y-1">
+              <li>1911: fin del veto absoluto de los Lores.</li>
+              <li>1949: reducción del retraso legislativo a 1 año.</li>
+              <li>Consolidación de la primacía de los Comunes.</li>
+            </ul>
+          </div>
+          <div class="space-y-4">
+            <h3 class="text-2xl font-semibold">Guerras Mundiales</h3>
+            <p class="text-gray-700 text-justify">
+              Los conflictos fortalecieron al ejecutivo y aceleraron el declive
+              del Partido Liberal. El sufragio femenino se amplió en 1918 y
+              alcanzó igualdad en 1928.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="siglo-xxi" class="section-card reveal scroll-mt-20">
+        <div class="flex items-center justify-between flex-wrap gap-4">
+          <h2 class="text-3xl font-semibold">Siglo XXI: Crisis y Adaptación</h2>
+          <span class="pill">Actualidad</span>
+        </div>
+        <p class="mt-4 text-gray-700 text-justify">
+          El Parlamento enfrenta desafíos como el Brexit, la polarización y la
+          digitalización. Las sesiones remotas durante la pandemia mostraron
+          resiliencia institucional y capacidad de reinvención.
+        </p>
+      </section>
+      <section id="linea-tiempo" class="section-card reveal scroll-mt-20">
+        <div class="flex items-center justify-between flex-wrap gap-4">
+          <h2 class="text-3xl font-semibold">Línea del Tiempo</h2>
+          <span class="pill">Hitos</span>
+        </div>
+        <div class="timeline mt-8">
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-card">
+              <div class="flex flex-wrap items-start gap-4">
+                <img
+                  src=".\\images\\1215.jpg"
+                  alt="Magna Carta"
+                  class="timeline-image"
+                  onerror="this.onerror=null;this.src='https://placehold.co/140x100/cccccc/ffffff?text=1215';"
+                />
+                <div>
+                  <h4 class="text-xl font-semibold text-gray-900">
+                    1215 - Carta Magna
+                  </h4>
+                  <p class="text-gray-600 text-sm mt-2 text-justify">
+                    Limitó el poder real e introdujo la idea de gobierno
+                    condicionado por la ley.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-card">
+              <div class="flex flex-wrap items-start gap-4">
+                <img
+                  src=".\\images\\1649.jpg"
+                  alt="Commonwealth"
+                  class="timeline-image"
+                  onerror="this.onerror=null;this.src='https://placehold.co/140x100/cccccc/ffffff?text=1649';"
+                />
+                <div>
+                  <h4 class="text-xl font-semibold text-gray-900">
+                    1649 - Commonwealth
+                  </h4>
+                  <p class="text-gray-600 text-sm mt-2 text-justify">
+                    Se abolió la monarquía tras la ejecución de Carlos I.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-card">
+              <div class="flex flex-wrap items-start gap-4">
+                <img
+                  src=".\\images\\1689.jpg"
+                  alt="Bill of Rights"
+                  class="timeline-image"
+                  onerror="this.onerror=null;this.src='https://placehold.co/140x100/cccccc/ffffff?text=1689';"
+                />
+                <div>
+                  <h4 class="text-xl font-semibold text-gray-900">
+                    1689 - Bill of Rights
+                  </h4>
+                  <p class="text-gray-600 text-sm mt-2 text-justify">
+                    Supremacía parlamentaria y garantías de elecciones libres.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-card">
+              <div class="flex flex-wrap items-start gap-4">
+                <img
+                  src=".\\images\\1832.jpg"
+                  alt="Reforma 1832"
+                  class="timeline-image"
+                  onerror="this.onerror=null;this.src='https://placehold.co/140x100/cccccc/ffffff?text=1832';"
+                />
+                <div>
+                  <h4 class="text-xl font-semibold text-gray-900">
+                    1832 - Primera Reforma
+                  </h4>
+                  <p class="text-gray-600 text-sm mt-2 text-justify">
+                    Redistribución de escaños y ampliación del sufragio.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-card">
+              <div class="flex flex-wrap items-start gap-4">
+                <img
+                  src=".\\images\\1911.jpg"
+                  alt="Parliament Act"
+                  class="timeline-image"
+                  onerror="this.onerror=null;this.src='https://placehold.co/140x100/cccccc/ffffff?text=1911';"
+                />
+                <div>
+                  <h4 class="text-xl font-semibold text-gray-900">
+                    1911 - Parliament Act
+                  </h4>
+                  <p class="text-gray-600 text-sm mt-2 text-justify">
+                    Se limitó el veto de la Cámara de los Lores.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-card">
+              <div class="flex flex-wrap items-start gap-4">
+                <img
+                  src=".\\images\\2016.jpg"
+                  alt="Brexit"
+                  class="timeline-image"
+                  onerror="this.onerror=null;this.src='https://placehold.co/140x100/cccccc/ffffff?text=2016';"
+                />
+                <div>
+                  <h4 class="text-xl font-semibold text-gray-900">
+                    2016 - Brexit
+                  </h4>
+                  <p class="text-gray-600 text-sm mt-2 text-justify">
+                    Tensiones entre soberanía parlamentaria y voluntad popular.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="influencia-global" class="section-card reveal scroll-mt-20">
+        <div class="flex items-center justify-between flex-wrap gap-4">
+          <h2 class="text-3xl font-semibold">Influencia Global</h2>
+          <span class="pill">Westminster</span>
+        </div>
+        <p class="mt-4 text-gray-700 text-justify">
+          El modelo de Westminster ha inspirado democracias en la Commonwealth,
+          adaptándose a contextos diversos con federalismo, constituciones
+          escritas y nuevos equilibrios de poder.
+        </p>
+        <div class="flow-grid mt-6">
+          <div class="flow-card">
+            <h4 class="text-lg font-semibold text-gray-900">Canadá</h4>
+            <p class="text-sm text-gray-600 mt-2">
+              Federalismo y Carta de Derechos (1982) con revisión judicial.
+            </p>
+          </div>
+          <div class="flow-card">
+            <h4 class="text-lg font-semibold text-gray-900">Australia</h4>
+            <p class="text-sm text-gray-600 mt-2">
+              Senado fuerte electo y constitución rígida.
+            </p>
+          </div>
+          <div class="flow-card">
+            <h4 class="text-lg font-semibold text-gray-900">India</h4>
+            <p class="text-sm text-gray-600 mt-2">
+              República federal con derechos fundamentales justiciables.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="conclusion" class="section-card reveal scroll-mt-20">
+        <h2 class="text-3xl font-semibold">Conclusión</h2>
+        <p class="mt-4 text-gray-700 text-justify">
+          El parlamentarismo británico evolucionó de tensiones monarquía-ley a
+          una institución representativa y adaptable. Las reformas electorales
+          y el control parlamentario consolidaron su supremacía, y las crisis
+          recientes evidenciaron su capacidad para reinventarse.
+        </p>
+        <p class="mt-4 text-gray-700 text-justify">
+          Su legado es un equilibrio dinámico entre tradición y modernidad,
+          inspirando modelos constitucionales que, aunque distintos, comparten
+          el hilo histórico de Westminster.
         </p>
       </section>
     </main>
 
-    <footer class="text-center p-6 bg-gray-800 text-gray-300">
-      <p>
-        © <span id="currentYear"></span> Línea de tiempo sobre la Evolución del
-        Parlamentarismo Británico. Emmanuel M.M. 2025.
-      </p>
+    <footer class="text-center py-8 text-sm text-gray-600">
+      © <span id="currentYear"></span> Línea de tiempo sobre la Evolución del
+      Parlamentarismo Británico. Emmanuel M.M. 2025.
     </footer>
-
     <script>
       document.getElementById("currentYear").textContent =
         new Date().getFullYear();
+
+      const navLinks = document.querySelectorAll("#sticky-nav a");
+      const sections = document.querySelectorAll("main section[id]");
+      const progressBar = document.getElementById("scroll-progress");
+
+      const onScroll = () => {
+        let currentSectionId = "";
+        const navHeight =
+          document.getElementById("sticky-nav")?.offsetHeight || 0;
+        const scrollTop = window.scrollY || window.pageYOffset;
+        const docHeight =
+          document.documentElement.scrollHeight - window.innerHeight;
+
+        if (progressBar && docHeight > 0) {
+          progressBar.style.width = `${(scrollTop / docHeight) * 100}%`;
+        }
+
+        sections.forEach((section) => {
+          const sectionTop = section.offsetTop;
+          const sectionHeight = section.clientHeight;
+          if (
+            scrollTop >= sectionTop - navHeight - sectionHeight * 0.15 &&
+            scrollTop < sectionTop + sectionHeight - navHeight
+          ) {
+            currentSectionId = section.getAttribute("id");
+          }
+        });
+
+        navLinks.forEach((link) => {
+          link.classList.remove("active");
+          if (link.getAttribute("href") === `#${currentSectionId}`) {
+            link.classList.add("active");
+          }
+        });
+      };
+
+      const revealTargets = document.querySelectorAll(".reveal");
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.2 }
+      );
+      revealTargets.forEach((el) => observer.observe(el));
+
+      window.addEventListener("scroll", onScroll);
+      document.addEventListener("DOMContentLoaded", onScroll);
+
+      navLinks.forEach((link) => {
+        link.addEventListener("click", function (e) {
+          e.preventDefault();
+          const targetId = this.getAttribute("href");
+          const targetSection = document.querySelector(targetId);
+          if (targetSection) {
+            const navHeight =
+              document.getElementById("sticky-nav")?.offsetHeight || 0;
+            const targetPosition = targetSection.offsetTop - navHeight - 8;
+
+            window.scrollTo({
+              top: targetPosition,
+              behavior: "smooth",
+            });
+          }
+        });
+      });
 
       function processLabels(labels, maxLength = 16) {
         return labels.map((label) => {
@@ -1172,9 +806,8 @@
                 let label = item.chart.data.labels[item.dataIndex];
                 if (Array.isArray(label)) {
                   return label.join(" ");
-                } else {
-                  return label;
                 }
+                return label;
               },
             },
           },
@@ -1196,8 +829,8 @@
               {
                 label: "Tamaño Estimado del Electorado (Inglaterra y Gales)",
                 data: [435000, 652000],
-                backgroundColor: ["#00B4D8", "#0077B6"],
-                borderColor: ["#0096C7", "#005A8D"],
+                backgroundColor: ["#2F80ED", "#F05A28"],
+                borderColor: ["#1F6ACC", "#D94E23"],
                 borderWidth: 1,
               },
             ],
@@ -1232,18 +865,18 @@
               {
                 label: "Escaños Partido Laborista (Estimación Ilustrativa)",
                 data: [2, 40, 142, 287, 393],
-                borderColor: "#FFB703",
-                backgroundColor: "rgba(255, 183, 3, 0.1)",
+                borderColor: "#F05A28",
+                backgroundColor: "rgba(240, 90, 40, 0.2)",
                 fill: true,
-                tension: 0.1,
+                tension: 0.3,
               },
               {
                 label: "Escaños Partido Liberal (Estimación Ilustrativa)",
                 data: [183, 272, 118, 59, 12],
-                borderColor: "#48CAE4",
-                backgroundColor: "rgba(72, 202, 228, 0.1)",
+                borderColor: "#2F80ED",
+                backgroundColor: "rgba(47, 128, 237, 0.2)",
                 fill: true,
-                tension: 0.1,
+                tension: 0.3,
               },
             ],
           },
@@ -1260,80 +893,30 @@
         });
       }
 
-      const navLinks = document.querySelectorAll("#sticky-nav a");
-      const sections = document.querySelectorAll("main section[id]"); // Asegurarse que solo selecciona secciones con ID
-
-      function throttle(fn, delay) {
-        let lastCall = 0;
-        return function (...args) {
-          const now = new Date().getTime();
-          if (now - lastCall < delay) {
-            return;
-          }
-          lastCall = now;
-          return fn(...args);
-        };
-      }
-
-      const onScroll = () => {
-        let currentSectionId = "";
-        const navHeight =
-          document.getElementById("sticky-nav")?.offsetHeight || 0;
-
-        sections.forEach((section) => {
-          const sectionTop = section.offsetTop;
-          const sectionHeight = section.clientHeight;
-          // Ajustar el punto de activación para considerar la altura de la barra de navegación
-          // y un pequeño búfer. Se activa cuando el borde superior de la sección está a 1/3 de la altura
-          // de la sección desde la parte superior del viewport, o más cerca.
-          if (
-            pageYOffset >= sectionTop - navHeight - sectionHeight * 0.1 &&
-            pageYOffset <
-              sectionTop + sectionHeight - navHeight - sectionHeight * 0.1
-          ) {
-            currentSectionId = section.getAttribute("id");
-          }
-        });
-
-        // Si después de revisar todas las secciones, ninguna está "activa" bajo la nueva lógica
-        // (por ejemplo, al estar muy al final de la página), se podría intentar resaltar la última visible.
-        // O, si currentSectionId queda vacío, se podría no resaltar ninguna o la primera por defecto.
-        // Por ahora, la lógica se mantiene simple.
-
-        navLinks.forEach((link) => {
-          link.classList.remove("text-0077B6", "font-bold", "accent-color");
-          link.classList.add("text-gray-600");
-          if (link.getAttribute("href") === `#${currentSectionId}`) {
-            link.classList.add("text-0077B6", "font-bold", "accent-color");
-            link.classList.remove("text-gray-600");
-          }
-        });
-      };
-
-      const throttledScroll = throttle(onScroll, 100);
-      window.addEventListener("scroll", throttledScroll);
-      // Ejecutar una vez al cargar para el estado inicial
-      document.addEventListener("DOMContentLoaded", () => {
-        onScroll();
-        // Añadir smooth scroll a los enlaces de navegación, considerando el offset
-        navLinks.forEach((link) => {
-          link.addEventListener("click", function (e) {
-            e.preventDefault();
-            const targetId = this.getAttribute("href");
-            const targetSection = document.querySelector(targetId);
-            if (targetSection) {
-              const navHeight =
-                document.getElementById("sticky-nav")?.offsetHeight || 0;
-              const targetPosition = targetSection.offsetTop - navHeight - 10; // 10px de buffer adicional
-
-              window.scrollTo({
-                top: targetPosition,
-                behavior: "smooth",
-              });
+      const counters = document.querySelectorAll("[data-count]");
+      const countObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const el = entry.target;
+              const target = Number(el.getAttribute("data-count")) || 0;
+              let current = 0;
+              const increment = Math.max(1, Math.floor(target / 40));
+              const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                  current = target;
+                  clearInterval(timer);
+                }
+                el.textContent = current;
+              }, 35);
+              countObserver.unobserve(el);
             }
           });
-        });
-      });
+        },
+        { threshold: 0.7 }
+      );
+      counters.forEach((counter) => countObserver.observe(counter));
     </script>
   </body>
 </html>
